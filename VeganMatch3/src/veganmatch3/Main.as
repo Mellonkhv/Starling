@@ -11,6 +11,14 @@ package veganmatch3
 	public class Main extends Sprite 
 	{
 		//=========================================
+		// PUBLIC VARIABLE
+		public static const SCREEN_WIDTH:int = 640;
+		public static const SCREEN_HEIGHT:int = 480;
+		
+		public static const SCREEN_WDIV:int = 320;
+		public static const SCREEN_HDIV:int = 240;
+		
+		//=========================================
 		// CONSTRUCTOR
 		public function Main():void 
 		{
