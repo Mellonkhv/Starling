@@ -1,6 +1,6 @@
 package veganmatch3
 {
-	import flash.events.Event;
+	import starling.events.Event;
 	import starling.display.Sprite;
 	
 	/**
@@ -19,7 +19,7 @@ package veganmatch3
 		{
 			super();
 			if (stage) init();
-			else addEventListener(Event.ADDED_TO_STAGE, init);
+			else this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
 		//=========================================
