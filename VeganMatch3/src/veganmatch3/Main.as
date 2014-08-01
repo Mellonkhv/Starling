@@ -1,4 +1,4 @@
-package 
+package veganmatch3 
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
@@ -25,7 +25,7 @@ package
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
 			
-			var staling:Starling = new Starling(GameMenu, stage);
+			var staling:Starling = new Starling(Game, stage);
 			staling.start();
 		}
 		

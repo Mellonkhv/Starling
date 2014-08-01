@@ -1,4 +1,5 @@
-package  
+import veganmatch3.Game;
+package veganmatch3  
 {
 	import starling.events.Event;
 	import starling.display.Sprite;
@@ -10,6 +11,9 @@ package
 	public class GameMenu extends Sprite 
 	{
 		//=========================================
+		// PRIVATE VARIABLE
+		private var _game:Game;
+		//=========================================
 		// CONSTRUCTOR
 		public function GameMenu() 
 		{
@@ -19,6 +23,8 @@ package
 			else this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
+		//=========================================
+		// PRIVATE FUNCTION
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
