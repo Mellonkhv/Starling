@@ -1,20 +1,34 @@
-package veganmatch3  
+package veganmatch3
 {
+	import flash.events.Event;
 	import starling.display.Sprite;
 	
 	/**
 	 * ...
 	 * @author Mellonkhv
 	 */
-	public class Game extends Sprite 
+	public class Game extends Sprite
 	{
+		//=========================================
+		// PRIVATE VARIABLE
+		private var _universe:Univerce;
 		
-		public function Game() 
+		//=========================================
+		// CONSTRUCTOR
+		public function Game()
 		{
 			super();
-			
+			if (stage) init();
+			else addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
+		//=========================================
+		// PRIVATE FUNCTION
+		private function init(e:Event = null):void 
+		{
+			_universe = new Univerce();
+			addChild(_universe);
+		}
 	}
 
 }
