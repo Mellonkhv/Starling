@@ -26,6 +26,8 @@ package veganmatch3
 		// PRIVATE FUNCTION
 		private function init(e:Event = null):void 
 		{
+			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			_universe = new Univerce();
 			addChild(_universe);
 		}
