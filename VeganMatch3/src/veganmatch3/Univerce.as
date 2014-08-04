@@ -17,18 +17,19 @@ package veganmatch3
 		//=========================================
 		// PRIVATE CONSTANTS
 		private const NUM_PIECES:uint = 6;
-		private const SPACING:Number = 5;
+		private const SPACING:Number = 45;
 		private const OFFSET_X:Number = 10;
 		private const OFFSET_Y:Number = 10;
 		
 		//=========================================
 		// PUBLIC VARIABLE
-		private var _board:Sprite;
+		private var _board:Sprite; // TODO: Фон поменять на Image
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
-		private var gameSprite:Sprite /// непонял, разберёмся
+		private var gameSprite:Sprite // Спрайт для фишек.
 		private var firstPice:Sprite /// ссылка на первую кликнутую фишку
-		private var isDroping, isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
+		private var isDroping:Boolean; //какие фишки нам надо анимировать в данный момент
+		private var isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var gameScore:int;
 		
 		
@@ -43,7 +44,7 @@ package veganmatch3
 		
 		//=========================================
 		// PRIVATE FUNCTION
-		private function init(e:Event):void 
+		private function init(e:Event=null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
@@ -67,7 +68,53 @@ package veganmatch3
 		
 		private function setUpGrid():void 
 		{
+			//var check:Boolean = true;
+			while (true) 
+			{
+				// Создаём спрайт
+				gameSprite = new Sprite();
+				for (var col:int = 0; col < MAP_SIZE; col++) 
+				{
+					for (var row:int = 0; row < MAP_SIZE; row++) 
+					{
+						addPiece(col, row);
+					}
+				}
+				// Проверка на "3Вряд" на поле
+				//if (lookForMatches().length != 0) continue;// check = false;
+				// Проверка на возможность хода
+				//if (lookForPossible() == false) continue;// check = false;
+				break;
+			}
+			addChild (gameSprite);
+		}
+		
+		// создаем рандомную фишку, добавляем ее в спрайт и сетку
+		private function addPiece(col:int, row:int):void 
+		{
+			var newPiece:Piece = new Piece(Math.ceil(Math.random() * 6));
+			newPiece.x = col * SPACING + OFFSET_X;
+			newPiece.y = row * SPACING + OFFSET_Y;
+			//newPiece.col = col;  
+			//newPiece.row = row;
+			gameSprite.addChild(newPiece);
+			_grid[col][row] = newPiece;
+			//newPiece.addEventListener(MouseEvent.CLICK,clickPiece);
 			
+			/// То что было в оригинале
+			/*var newPiece:Piece = new Piece();
+			newPiece.x = col * spacing + offsetX;
+			newPiece.y = row * spacing + offsetY; 
+			
+			newPiece.col = col;  
+			newPiece.row = row;
+			newPiece.type = Math.cell(Math.random()*7);
+			newPiece.gotoAndStop(newPiece.type);
+			newPiece.select.visible = false;    
+			gameSprite.addChild(newPiece);    
+			grid[col][row] = newPiece;    
+			newPiece.addEventListener(MouseEvent.CLICK,clickPiece);
+			return newPiece;*/
 		}
 		
 		private function movePieces(e:Event):void 
