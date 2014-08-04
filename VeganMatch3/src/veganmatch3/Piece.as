@@ -30,7 +30,7 @@ package veganmatch3
 		
 		private function createPieceArt():void 
 		{
-			_pieceImage = new Image(Assets.getAtlas().getTexture("tile_0" + _type));
+			_pieceImage = new Image(Assets.getAtlas().getTexture("title_0" + _type));
 			_pieceImage.x = 0;
 			_pieceImage.y = 0;
 			this.addChild(_pieceImage);
