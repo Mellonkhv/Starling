@@ -2,6 +2,9 @@ package veganmatch3
 {
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	/**
 	 * ...
@@ -26,8 +29,8 @@ package veganmatch3
 		private var _board:Sprite; // TODO: Фон поменять на Image
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
-		private var gameSprite:Sprite // Спрайт для фишек.
-		private var firstPice:Sprite /// ссылка на первую кликнутую фишку
+		private var gameSprite:Sprite; // Спрайт для фишек.
+		private var firstPice:Piece; /// ссылка на первую кликнутую фишку
 		private var isDroping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var gameScore:int;
@@ -92,13 +95,15 @@ package veganmatch3
 		// создаем рандомную фишку, добавляем ее в спрайт и сетку
 		private function addPiece(col:int, row:int):void 
 		{
-			var newPiece:Piece = new Piece(Math.ceil(Math.random() * 6));
+			var newPiece:Piece = new Piece();
+			newPiece.type = Math.ceil(Math.random() * 6);
 			newPiece.x = col * SPACING + OFFSET_X;
 			newPiece.y = row * SPACING + OFFSET_Y;
 			//newPiece.col = col;  
 			//newPiece.row = row;
 			gameSprite.addChild(newPiece);
 			_grid[col][row] = newPiece;
+			newPiece.addEventListener(TouchEvent.TOUCH, clickPiece);
 			//newPiece.addEventListener(MouseEvent.CLICK,clickPiece);
 			
 			/// То что было в оригинале
@@ -115,6 +120,24 @@ package veganmatch3
 			grid[col][row] = newPiece;    
 			newPiece.addEventListener(MouseEvent.CLICK,clickPiece);
 			return newPiece;*/
+		}
+		
+		private function clickPiece(e:TouchEvent):void 
+		{
+			var piece:Piece = Piece(e.currentTarget);
+			var touches:Vector.<Touch> = e.getTouches(this, TouchPhase.ENDED);
+			if (touches.length == 0) return;
+			//trace(touches[0]);
+			if (firstPice == null)
+			{
+				firstPice = piece;
+				piece.pieceSelect.visible = true;
+			}
+			else if (firstPice == piece)
+			{
+				piece.pieceSelect.visible = false;
+				firstPice = null;
+			}
 		}
 		
 		private function movePieces(e:Event):void 
