@@ -12,6 +12,8 @@ package veganmatch3
 	{
 		private var _type:int;
 		private var _pieceImage:Image;
+		private var _col:uint;
+		private var _row:uint;
 		
 		public var pieceSelect:Image;
 		
@@ -51,6 +53,26 @@ package veganmatch3
 		public function set type(value:int):void 
 		{
 			_type = value;
+		}
+		
+		public function get col():uint 
+		{
+			return _col;
+		}
+		
+		public function set col(value:uint):void 
+		{
+			_col = value;
+		}
+		
+		public function get row():uint 
+		{
+			return _row;
+		}
+		
+		public function set row(value:uint):void 
+		{
+			_row = value;
 		}
 		
 	}
