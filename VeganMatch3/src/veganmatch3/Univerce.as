@@ -54,7 +54,6 @@ package veganmatch3
 			startMatchThree();
 		}
 		
-		// TODO: 1.Создание случайно-генерируемого игрового поля.
 		private function startMatchThree():void 
 		{
 			_grid = new Array();
@@ -235,7 +234,7 @@ package veganmatch3
 			if (isDroping && madeMove)
 			{
 				isDroping = false;
-				finrAndRemoveMatches();
+				findAndRemoveMatches();
 			}
 			// Все обмены завершены
 			else if (isSwapping && madeMove)
@@ -245,17 +244,34 @@ package veganmatch3
 			}
 		}
 		
-		// TODO: 2.Проверка на линии.
-		// TODO: 3.Проверка на возможность первого хода.
-		// TODO: 4.Игрок выбирает 2 фишки.
-		// TODO: 5.Фишки меняются местами
-		// TODO: 6.Проверка на линии.
-		// TODO: 7.При нахождении линии вознаграждаем игрока очками.
-		// TODO: 8.Убираем линии с поля.
-		// TODO: 9.Сдвигаем верхние фишки на место исчезнувших.
-		// TODO: 10.Заполняем образовавшиеся пустоты.
-		// TODO: 11.Снова проверяем на линии. Возвращаемся к пункту 6.
-		// TODO: 12.Проверка на возможность хода.
+		private function findAndRemoveMatches():void 
+		{
+			// Формируем список линий
+			var matches:Array = lookForMatches();
+			for (var i:int = 0; i < matches.length; i++) 
+			{
+				var numPoints:Number = (matches[i].length - 1) * 50;
+				for (var j:int = 0; j < matches[i].length; j++)
+				{
+					if (gameSprite.contains(matches[i][j]))
+					{
+						var pb = new PointBurst(this, numPoints, matches[i][j].x, matches[i][j].y);
+						addScore(numPoints);
+						gameSprite.removeChild(matches[i][j]);
+						_grid[matches[i][j].col][matches[i][j].row] = null;
+						affectAbove(matches[i][j]);
+					}
+				}
+			}
+			// добавляем новую фишку вверху поля
+			addNewPieces();
+			
+			// линий ненайдено проверяем на возможность хода
+			if (matches.length == 0)
+			{
+				if (!lookForPosibles()) endGames();				
+			}
+		}
 	}
 
 }
