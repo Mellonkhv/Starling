@@ -5,10 +5,25 @@
 	http://renderhjs.net/shoebox/
 	-->
 	<SubTexture name="StartBtnUp"	x="0"	y="0"	width="197"	height="93" frameX="-1" frameY="-1" frameWidth="199" frameHeight="96"/>
-	<SubTexture name="title_01"	x="46"	y="140"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
-	<SubTexture name="title_02"	x="46"	y="94"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
-	<SubTexture name="title_03"	x="46"	y="186"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
-	<SubTexture name="title_04"	x="0"	y="140"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
-	<SubTexture name="title_05"	x="0"	y="186"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
-	<SubTexture name="title_06"	x="0"	y="94"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="select"	x="0"	y="94"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_01"	x="92"	y="140"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_02"	x="92"	y="94"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_03"	x="46"	y="462"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_04"	x="46"	y="416"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_05"	x="46"	y="370"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_06"	x="46"	y="324"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_07"	x="46"	y="278"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_08"	x="46"	y="232"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_09"	x="46"	y="186"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_10"	x="46"	y="140"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_11"	x="92"	y="186"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_12"	x="0"	y="462"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_13"	x="0"	y="416"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_14"	x="0"	y="370"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_15"	x="0"	y="324"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_16"	x="46"	y="94"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_17"	x="0"	y="232"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_18"	x="0"	y="186"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_19"	x="0"	y="278"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
+	<SubTexture name="title_20"	x="0"	y="140"	width="45"	height="45" frameX="-0" frameY="-0" frameWidth="45" frameHeight="45"/>
 </TextureAtlas>
