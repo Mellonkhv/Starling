@@ -272,6 +272,41 @@ package veganmatch3
 				if (!lookForPosibles()) endGames();				
 			}
 		}
+		
+		private function lookForMatches():Array 
+		{
+			var matchList:Array = new Array();
+			
+			//поиск по горизонту
+			for (var row:int = 0; row < 8; row++) 
+			{
+				for (var col:int = 0; col < 6; col++) 
+				{
+					var match:Array = getMatchHoriz(col, row);
+					if (match.length > 2)
+					{
+						matchList.push(match);
+						col += match.length - 1;
+					}
+				}
+			}
+			
+			// поиск вертикальных линий
+			for (var col:int = 0; col < 8; col++) 
+			{
+				for (var row:int = 0; row < 6; row++) 
+				{
+					var match:Array = getMatchVert(col, row);
+					if (match.length > 2)
+					{
+						matchList.push(match);
+						row += match.length - 1;
+					}
+				}
+			}
+			
+			return matchList;
+		}
 	}
 
 }
