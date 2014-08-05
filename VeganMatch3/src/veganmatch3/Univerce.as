@@ -163,14 +163,86 @@ package veganmatch3
 			}
 		}
 		
-		private function makeSwap(firstPice:Piece, piece:Piece):void 
+		private function makeSwap(firstPice:Piece, secondPiece:Piece):void 
 		{
+			swapPieces(firstPice, secondPiece);
 			
+			// проверяем, был ли обмен удачным
+			if (lookForMatches().length == 0)
+			{
+				swapPieces(firstPice, secondPiece);
+			}
+			else
+			{
+				isSwapping = true;
+			}
 		}
 		
+		// Обмен двух фишек
+		private function swapPieces(firstPice:Piece, secondPiece:Piece):void 
+		{
+			// обмениваем значение row и col
+			var tempCol:uint = firstPice.col;
+			var tempRow:uint = firstPice.row;
+			firstPice.col = secondPiece.col;
+			firstPice.row = secondPiece.row;
+			secondPiece.col = tempCol;
+			secondPiece.row = tempRow;
+			
+			// измменяем позицию в сетке
+			_grid[firstPice.col][firstPice.row] = firstPice;
+			_grid[secondPiece.col][secondPiece.row] = secondPiece;
+		}
+		
+		// Если фишка не наместе двигаем её на него
 		private function movePieces(e:Event):void 
 		{
-			
+			var madeMove:Boolean = false;
+			for (var row:int = 0; row < 8; row++) 
+			{
+				for (var col:int = 0; col < 8; col++) 
+				{
+					if (_grid[col][row] != null)
+					{
+						// Смещаем вниз
+						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y)
+						{
+							_grid[col][row].y += 5;
+							madeMove = true;
+						}
+						// Смещаем вверх
+						if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y)
+						{
+							_grid[col][row].y += 5;
+							madeMove = true;
+						}
+						// Смещаем вправо
+						if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X)
+						{
+							_grid[col][row].x += 5;
+							madeMove = true;
+						}
+						// Смещаем влево
+						if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X)
+						{
+							_grid[col][row].x += 5;
+							madeMove = true;
+						}
+					}
+				}
+			}
+			// Все падения завершены
+			if (isDroping && madeMove)
+			{
+				isDroping = false;
+				finrAndRemoveMatches();
+			}
+			// Все обмены завершены
+			else if (isSwapping && madeMove)
+			{
+				isSwapping = false;
+				findAndRemoveMatches();
+			}
 		}
 		
 		// TODO: 2.Проверка на линии.
