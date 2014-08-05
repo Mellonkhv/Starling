@@ -99,8 +99,8 @@ package veganmatch3
 			newPiece.type = Math.ceil(Math.random() * 6);
 			newPiece.x = col * SPACING + OFFSET_X;
 			newPiece.y = row * SPACING + OFFSET_Y;
-			//newPiece.col = col;  
-			//newPiece.row = row;
+			newPiece.col = col;
+			newPiece.row = row;
 			gameSprite.addChild(newPiece);
 			_grid[col][row] = newPiece;
 			newPiece.addEventListener(TouchEvent.TOUCH, clickPiece);
@@ -127,17 +127,45 @@ package veganmatch3
 			var piece:Piece = Piece(e.currentTarget);
 			var touches:Vector.<Touch> = e.getTouches(this, TouchPhase.ENDED);
 			if (touches.length == 0) return;
-			//trace(touches[0]);
+			// клик на первой фишке
 			if (firstPice == null)
 			{
 				firstPice = piece;
 				piece.pieceSelect.visible = true;
 			}
+			// Клик на первой фишке повторно
 			else if (firstPice == piece)
 			{
 				piece.pieceSelect.visible = false;
 				firstPice = null;
 			}
+			// Клик на другой фишке
+			else
+			{
+				firstPice.pieceSelect.visible = false;
+				// Тотже ряд, проверяем соседство в колонке
+				if ((firstPice.row == piece.row) && (Math.abs(firstPice.col - piece.col) == 1))
+				{
+					makeSwap(firstPice, piece);
+					firstPice = null;
+				}
+				// таже колонка проверяем соседство в ряду
+				else if ((firstPice.col = piece.col) && (Math.abs(firstPice.row - piece.row) == 1))
+				{
+					makeSwap(firstPice, piece);
+					firstPice = null;
+				}
+				else
+				{
+					firstPice = piece;
+					firstPice.pieceSelect.visible = true;
+				}
+			}
+		}
+		
+		private function makeSwap(firstPice:Piece, piece:Piece):void 
+		{
+			
 		}
 		
 		private function movePieces(e:Event):void 
