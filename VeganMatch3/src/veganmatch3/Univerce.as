@@ -307,6 +307,51 @@ package veganmatch3
 			
 			return matchList;
 		}
+		
+		// поиск горизонтальных линий из заданной точки
+		private function getMatchHoriz(col:int, row:int):Array 
+		{
+			var match:Array = new Array(_grid[col][row]);
+			for (var i:int = 1; col + i < 8; i++) 
+			{
+				if (_grid[col][row].type == _grid[col + i][row].type)
+				{
+					match.push(_grid[col + i][row]);
+				}
+				else return match;
+			}
+			
+			return match;
+		}
+		
+		// поиск вертикальных линий из заданной точки
+		private function getMatchVert(col:int, row:int):Array
+		{
+				var match:Array = new Array(_grid[col][row]);
+			for (var i:int = 1; row + i < 8; i++) 
+			{
+				if (_grid[col][row].type == _grid[col][row + i].type)
+				{
+					match.push(_grid[col][row + i]);
+				}
+				else return match;
+			}
+			
+			return match;
+		}
+		
+		// заставляет фшки над переданой в функцию двигаться вниз
+		private function affectAbove(piece:Piece):void 
+		{
+			for (var row:int = piece.row - 1; row >=0 ; row--) 
+			{
+				if (_grid[piece.col][row] != null)
+				{
+					_grid[piece.col][row].row++;
+					_grid[piece.col][row + 1] = _grid[piece.col][row];
+					_grid[piece.col][row] = null;
+				}
+			}
+		}
 	}
-
 }
