@@ -340,7 +340,7 @@ package veganmatch3
 			return match;
 		}
 		
-		// заставляет фшки над переданой в функцию двигаться вниз
+		// заставляет фишки над переданой в функцию двигаться вниз
 		private function affectAbove(piece:Piece):void 
 		{
 			for (var row:int = piece.row - 1; row >=0 ; row--) 
@@ -350,6 +350,24 @@ package veganmatch3
 					_grid[piece.col][row].row++;
 					_grid[piece.col][row + 1] = _grid[piece.col][row];
 					_grid[piece.col][row] = null;
+				}
+			}
+		}
+		
+		// Если в колонке отсутствует фишка, добавляем новую, падающую сверху
+		private function addNewPiece():void
+		{
+			for (var col:int = 0; col < 8; col++) 
+			{
+				var missingPieces:int = 0;
+				for (var row:int = 7; row >=0; row--) 
+				{
+					if (_grid[col][row] == null)
+					{
+						var newPiece:Piece = addPiece(col, row);
+						newPiece.y = OFFSET_Y - SPACING - SPACING * missingPieces++;
+						isDroping = true;
+					}
 				}
 			}
 		}
