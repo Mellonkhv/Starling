@@ -92,7 +92,7 @@ package veganmatch3
 		}
 		
 		// создаем рандомную фишку, добавляем ее в спрайт и сетку
-		private function addPiece(col:int, row:int):void 
+		private function addPiece(col:int, row:int):Piece 
 		{
 			var newPiece:Piece = new Piece();
 			newPiece.type = Math.ceil(Math.random() * 6);
@@ -103,6 +103,7 @@ package veganmatch3
 			gameSprite.addChild(newPiece);
 			_grid[col][row] = newPiece;
 			newPiece.addEventListener(TouchEvent.TOUCH, clickPiece);
+			return newPiece;
 			//newPiece.addEventListener(MouseEvent.CLICK,clickPiece);
 			
 			/// То что было в оригинале
@@ -255,7 +256,7 @@ package veganmatch3
 				{
 					if (gameSprite.contains(matches[i][j]))
 					{
-						var pb = new PointBurst(this, numPoints, matches[i][j].x, matches[i][j].y);
+						//var pb = new PointBurst(this, numPoints, matches[i][j].x, matches[i][j].y);
 						addScore(numPoints);
 						gameSprite.removeChild(matches[i][j]);
 						_grid[matches[i][j].col][matches[i][j].row] = null;
@@ -269,7 +270,7 @@ package veganmatch3
 			// линий ненайдено проверяем на возможность хода
 			if (matches.length == 0)
 			{
-				if (!lookForPosibles()) endGames();				
+				if (!lookForPosibles()) endGame();				
 			}
 		}
 		
@@ -355,7 +356,7 @@ package veganmatch3
 		}
 		
 		// Если в колонке отсутствует фишка, добавляем новую, падающую сверху
-		private function addNewPiece():void
+		private function addNewPieces():void
 		{
 			for (var col:int = 0; col < 8; col++) 
 			{
@@ -380,12 +381,12 @@ package veganmatch3
 				for (var row:int = 0; row < 8; row++) 
 				{
 					// Возможно горизонтальная, две подряд
-					if (matchPatern(col, row, [[1, 0]], [[ -2, 0], [ -1, -1], [ -1, 1], [2, -1], [2, 1], [3, 0]]))
+					if (matchPattern(col, row, [[1, 0]], [[ -2, 0], [ -1, -1], [ -1, 1], [2, -1], [2, 1], [3, 0]]))
 					{
 						return true;
 					}
 					// возможна горизонтальная, две по разным сторонам
-					if (matchPatern(col, row, [[2, 0]], [[1, -1], [1, 1]] ))
+					if (matchPattern(col, row, [[2, 0]], [[1, -1], [1, 1]] ))
 					{
 						return true;
 					}
@@ -406,7 +407,7 @@ package veganmatch3
 			
 		}
 		
-		private function matchPatern(col:uint, row:uint, mustHave:Array, needOne:Array):void 
+		private function matchPattern(col:uint, row:uint, mustHave:Array, needOne:Array):Boolean 
 		{
 			var thisType:int = _grid[col][row].type;
 			
@@ -441,6 +442,21 @@ package veganmatch3
 			// TODO: Посмотреть как в голодном герое раелизована запись результата
 		}
 		
+		private function endGame()
+		{
+			//сдвигаем в фон
+			setChildIndex(gameSprite, 0);
+			// переходим в экран окончания игры
+			// TODO: Требуется доработка
+		}
 		
+		// TODO: привязать функцию к кнопке playAgain
+		public function cleanUp()
+		{
+			_grid = null;
+			this.removeChild(gameSprite);
+			gameSprite = null;
+			removeEventListener(Event.ENTER_FRAME, movePieces);
+		}
 	}
 }
