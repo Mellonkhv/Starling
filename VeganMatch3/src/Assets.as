@@ -13,6 +13,9 @@ package
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
 		
+		[Embed(source = "Assets/Image/Background.png")]
+		public static const BackGroundImg:Class;
+		
 		[Embed(source = "Assets/Image/sprites.png")]
 		public static const AtlasTextureGame:Class;
 		[Embed(source = "Assets/Image/sprites.xml", mimeType = "application/octet-stream")]

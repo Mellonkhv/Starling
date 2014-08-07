@@ -1,5 +1,6 @@
 package veganmatch3 
 {
+	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -26,7 +27,7 @@ package veganmatch3
 		
 		//=========================================
 		// PUBLIC VARIABLE
-		private var _board:Sprite; // TODO: Фон поменять на Image
+		private var _board:Image; // TODO: Фон поменять на Image
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
 		private var gameSprite:Sprite; // Спрайт для фишек.
@@ -50,7 +51,8 @@ package veganmatch3
 		private function init(e:Event=null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			
+			_board = new Image(Assets.getTexture("BackGroundImg"));
+			this.addChild(_board);
 			startMatchThree();
 		}
 		
@@ -88,6 +90,8 @@ package veganmatch3
 				//if (lookForPossible() == false) continue;// check = false;
 				break;
 			}
+			gameSprite.x = 181;
+			gameSprite.y = 29;
 			addChild (gameSprite);
 		}
 		
@@ -96,8 +100,8 @@ package veganmatch3
 		{
 			var newPiece:Piece = new Piece();
 			newPiece.type = Math.ceil(Math.random() * 6);
-			newPiece.x = col * SPACING + OFFSET_X;
-			newPiece.y = row * SPACING + OFFSET_Y;
+			newPiece.x = (col * SPACING) + OFFSET_X + (col * 5);
+			newPiece.y = (row * SPACING) + OFFSET_Y + (row * 5);
 			newPiece.col = col;
 			newPiece.row = row;
 			gameSprite.addChild(newPiece);
@@ -189,25 +193,25 @@ package veganmatch3
 					if (_grid[col][row] != null)
 					{
 						// Смещаем вниз
-						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y)
+						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
 							_grid[col][row].y += 5;
 							madeMove = true;
 						}
 						// Смещаем вверх
-						if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y)
+						if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
 							_grid[col][row].y -= 5;
 							madeMove = true;
 						}
 						// Смещаем вправо
-						if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X)
+						if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X + col * 5)
 						{
 							_grid[col][row].x += 5;
 							madeMove = true;
 						}
 						// Смещаем влево
-						if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X)
+						if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X + col * 5)
 						{
 							_grid[col][row].x -= 5;
 							madeMove = true;
@@ -242,6 +246,7 @@ package veganmatch3
 					{
 						//var pb = new PointBurst(this, numPoints, matches[i][j].x, matches[i][j].y);
 						addScore(numPoints);
+						matches[i][j].removeEventListener(TouchEvent.TOUCH, clickPiece);
 						gameSprite.removeChild(matches[i][j]);
 						_grid[matches[i][j].col][matches[i][j].row] = null;
 						affectAbove(matches[i][j]);
