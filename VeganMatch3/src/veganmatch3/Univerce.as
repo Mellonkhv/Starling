@@ -104,22 +104,6 @@ package veganmatch3
 			_grid[col][row] = newPiece;
 			newPiece.addEventListener(TouchEvent.TOUCH, clickPiece);
 			return newPiece;
-			//newPiece.addEventListener(MouseEvent.CLICK,clickPiece);
-			
-			/// То что было в оригинале
-			/*var newPiece:Piece = new Piece();
-			newPiece.x = col * spacing + offsetX;
-			newPiece.y = row * spacing + offsetY; 
-			
-			newPiece.col = col;  
-			newPiece.row = row;
-			newPiece.type = Math.cell(Math.random()*7);
-			newPiece.gotoAndStop(newPiece.type);
-			newPiece.select.visible = false;    
-			gameSprite.addChild(newPiece);    
-			grid[col][row] = newPiece;    
-			newPiece.addEventListener(MouseEvent.CLICK,clickPiece);
-			return newPiece;*/
 		}
 		
 		private function clickPiece(e:TouchEvent):void 
