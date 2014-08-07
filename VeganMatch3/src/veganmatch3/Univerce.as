@@ -371,5 +371,70 @@ package veganmatch3
 				}
 			}
 		}
+		
+		// Проверка на возможные ходы
+		private function lookForPosibles():Boolean
+		{
+			for (var col:int = 0; col < 8; col++) 
+			{
+				for (var row:int = 0; row < 8; row++) 
+				{
+					// Возможно горизонтальная, две подряд
+					if (matchPatern(col, row, [[1, 0]], [[ -2, 0], [ -1, -1], [ -1, 1], [2, -1], [2, 1], [3, 0]]))
+					{
+						return true;
+					}
+					// возможна горизонтальная, две по разным сторонам
+					if (matchPatern(col, row, [[2, 0]], [[1, -1], [1, 1]] ))
+					{
+						return true;
+					}
+					// возможна вертикальная, две подряд
+					if (matchPattern(col, row, [[0, 1]], [[0, -2], [ -1, -1], [1, -1], [ -1, 2], [1, 2], [0, 3]]))
+					{
+						return true;
+					}
+					// возможна вертикальная, две по разным стьоронам
+					if (matchPattern(col, row, [[0, 2]], [[ -1, 1], [1, 1]]))
+					{
+						return true;
+					}
+				}
+			}
+			// не найдено возможных линий 
+			return false;
+			
+		}
+		
+		private function matchPatern(col:uint, row:uint, mustHave:Array, needOne:Array):void 
+		{
+			var thisType:int = _grid[col][row].type;
+			
+			// убедимся, что есть вторая фишка того же типа
+			for (var i:int = 0; i < mustHave.length; i++) 
+			{
+				if (!matchType(col + mustHave[i][0], row + mustHave[i][1], thisType))
+				{
+					return false;
+				}
+			}
+			// убедимся,  что третья фишка совпадает по типу с двумя другими
+			for (i= 0; i < needOne.length; i++) 
+			{
+				if (matchType(col + needOne[i][0], row + needOne[i][1], thisType))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		
+		private function matchType(col:int, row:int, type:int):Boolean 
+		{
+			if ((col<0) || (col>7)||(row<0)||(row>7)) return false;
+			return (_grid[col][row].type == type);
+		}
+		
+		
 	}
 }
