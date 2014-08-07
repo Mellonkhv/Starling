@@ -435,6 +435,12 @@ package veganmatch3
 			return (_grid[col][row].type == type);
 		}
 		
+		private function addScore (numPoints:int):void
+		{
+			gameScore += numPoints;
+			// TODO: Посмотреть как в голодном герое раелизована запись результата
+		}
+		
 		
 	}
 }
