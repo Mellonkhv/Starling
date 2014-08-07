@@ -213,7 +213,7 @@ package veganmatch3
 						// Смещаем вверх
 						if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y)
 						{
-							_grid[col][row].y += 5;
+							_grid[col][row].y -= 5;
 							madeMove = true;
 						}
 						// Смещаем вправо
@@ -225,7 +225,7 @@ package veganmatch3
 						// Смещаем влево
 						if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X)
 						{
-							_grid[col][row].x += 5;
+							_grid[col][row].x -= 5;
 							madeMove = true;
 						}
 					}
