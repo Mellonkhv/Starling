@@ -99,7 +99,7 @@ package veganmatch3
 		private function addPiece(col:int, row:int):Piece 
 		{
 			var newPiece:Piece = new Piece();
-			newPiece.type = Math.ceil(Math.random() * 6);
+			newPiece.type = Math.ceil(Math.random() * NUM_PIECES);
 			newPiece.x = (col * SPACING) + OFFSET_X + (col * 5);
 			newPiece.y = (row * SPACING) + OFFSET_Y + (row * 5);
 			newPiece.col = col;
@@ -130,6 +130,8 @@ package veganmatch3
 			// Клик на другой фишке
 			else
 			{
+				trace( firstPice.col + " - " + piece.col + " = " + (firstPice.col - piece.col));
+				trace( firstPice.row + " - " + piece.row + " = " + (firstPice.row - piece.row));
 				firstPice.pieceSelect.visible = false;
 				// Тотже ряд, проверяем соседство в колонке
 				if ((firstPice.row == piece.row) && (Math.abs(firstPice.col - piece.col) == 1))
@@ -138,7 +140,7 @@ package veganmatch3
 					firstPice = null;
 				}
 				// таже колонка проверяем соседство в ряду
-				else if ((firstPice.col = piece.col) && (Math.abs(firstPice.row - piece.row) == 1))
+				else if ((firstPice.col == piece.col) && (Math.abs(firstPice.row - piece.row) == 1))
 				{
 					makeSwap(firstPice, piece);
 					firstPice = null;
@@ -192,7 +194,7 @@ package veganmatch3
 				{
 					if (_grid[col][row] != null)
 					{
-						// Смещаем вниз
+						// Смещаем вни
 						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
 							_grid[col][row].y += 5;
