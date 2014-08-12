@@ -130,8 +130,6 @@ package veganmatch3
 			// Клик на другой фишке
 			else
 			{
-				trace( firstPice.col + " - " + piece.col + " = " + (firstPice.col - piece.col));
-				trace( firstPice.row + " - " + piece.row + " = " + (firstPice.row - piece.row));
 				firstPice.pieceSelect.visible = false;
 				// Тотже ряд, проверяем соседство в колонке
 				if ((firstPice.row == piece.row) && (Math.abs(firstPice.col - piece.col) == 1))
