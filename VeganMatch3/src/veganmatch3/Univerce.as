@@ -56,14 +56,12 @@ package veganmatch3
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			//_board = new Image(Assets.getTexture("BackGroundImg"));
 			//this.addChild(_board);
+			/// Запуск игры
 			startMatchThree();
-			_scoreText = new TextField(150, 100, "SCORE: 0", Assets.getFont().name, 24, 0xFFFFFF);
-			_scoreText.hAlign = HAlign.LEFT;
-			_scoreText.vAlign = VAlign.CENTER;
-			_scoreText.x = 20;
-			_scoreText.y = 20;
-			_scoreText.height = _scoreText.textBounds.height +10;
-			this.addChild(_scoreText);
+			
+			/// Вывод набраных очков
+			addScoreText();
+			
 		}
 		
 		private function startMatchThree():void 
@@ -436,6 +434,19 @@ package veganmatch3
 			return (_grid[col][row].type == type);
 		}
 		
+		/// Отображает количество набраных очков
+		private function addScoreText():void 
+		{
+			_scoreText = new TextField(150, 100, "SCORE: 0", Assets.getFont().name, 24, 0xFFFFFF);
+			_scoreText.hAlign = HAlign.LEFT;
+			_scoreText.vAlign = VAlign.CENTER;
+			_scoreText.x = 20;
+			_scoreText.y = 20;
+			_scoreText.height = _scoreText.textBounds.height +10;
+			this.addChild(_scoreText);
+		}
+		
+		/// Считает количество набраных очков
 		private function addScore (numPoints:int):void
 		{
 			_gameScore += numPoints;
