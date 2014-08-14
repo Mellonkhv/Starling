@@ -6,6 +6,9 @@ package veganmatch3
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
+	import starling.text.TextField;
+	import starling.utils.HAlign;
+	import starling.utils.VAlign;
 	
 	/**
 	 * ...
@@ -26,16 +29,16 @@ package veganmatch3
 		private const OFFSET_Y:Number = 10;
 		
 		//=========================================
-		// PUBLIC VARIABLE
+		// PRIVATE VARIABLE
 		private var _board:Image; // TODO: Фон поменять на Image
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
-		private var gameSprite:Sprite; // Спрайт для фишек.
-		private var firstPice:Piece; /// ссылка на первую кликнутую фишку
-		private var isDroping:Boolean; //какие фишки нам надо анимировать в данный момент
-		private var isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
-		private var gameScore:int;
-		
+		private var _gameSprite:Sprite; // Спрайт для фишек.
+		private var _firstPice:Piece; /// ссылка на первую кликнутую фишку
+		private var _isDroping:Boolean; //какие фишки нам надо анимировать в данный момент
+		private var _isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
+		private var _gameScore:int;
+		private var _scoreText:TextField;
 		
 		//=========================================
 		// CONSTRUCTOR
@@ -51,9 +54,16 @@ package veganmatch3
 		private function init(e:Event=null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			_board = new Image(Assets.getTexture("BackGroundImg"));
-			this.addChild(_board);
+			//_board = new Image(Assets.getTexture("BackGroundImg"));
+			//this.addChild(_board);
 			startMatchThree();
+			_scoreText = new TextField(150, 100, "SCORE: 0", Assets.getFont().name, 24, 0xFFFFFF);
+			_scoreText.hAlign = HAlign.LEFT;
+			_scoreText.vAlign = VAlign.CENTER;
+			_scoreText.x = 20;
+			_scoreText.y = 20;
+			_scoreText.height = _scoreText.textBounds.height +10;
+			this.addChild(_scoreText);
 		}
 		
 		private function startMatchThree():void 
@@ -64,9 +74,10 @@ package veganmatch3
 				_grid.push(new Array());
 			}
 			setUpGrid();
-			isDroping = false;
-			isSwapping = false;
-			gameScore = 0;
+			_isDroping = false;
+			_isSwapping = false;
+			_gameScore = 0;
+			//_scoreText.text = "Score: " + _gameScore;
 			this.addEventListener(Event.ENTER_FRAME, movePieces);
 		}
 		
@@ -76,7 +87,7 @@ package veganmatch3
 			while (true) 
 			{
 				// Создаём спрайт
-				gameSprite = new Sprite();
+				_gameSprite = new Sprite();
 				for (var col:int = 0; col < MAP_SIZE; col++) 
 				{
 					for (var row:int = 0; row < MAP_SIZE; row++) 
@@ -90,9 +101,9 @@ package veganmatch3
 				//if (lookForPossible() == false) continue;// check = false;
 				break;
 			}
-			gameSprite.x = 181;
-			gameSprite.y = 29;
-			addChild (gameSprite);
+			_gameSprite.x = 181;
+			_gameSprite.y = 29;
+			addChild (_gameSprite);
 		}
 		
 		// создаем рандомную фишку, добавляем ее в спрайт и сетку
@@ -104,7 +115,7 @@ package veganmatch3
 			newPiece.y = (row * SPACING) + OFFSET_Y + (row * 5);
 			newPiece.col = col;
 			newPiece.row = row;
-			gameSprite.addChild(newPiece);
+			_gameSprite.addChild(newPiece);
 			_grid[col][row] = newPiece;
 			newPiece.addEventListener(TouchEvent.TOUCH, clickPiece);
 			return newPiece;
@@ -116,69 +127,69 @@ package veganmatch3
 			var touches:Vector.<Touch> = e.getTouches(this, TouchPhase.ENDED);
 			if (touches.length == 0) return;
 			// клик на первой фишке
-			if (firstPice == null)
+			if (_firstPice == null)
 			{
-				firstPice = piece;
+				_firstPice = piece;
 				piece.pieceSelect.visible = true;
 			}
 			// Клик на первой фишке повторно
-			else if (firstPice == piece)
+			else if (_firstPice == piece)
 			{
 				piece.pieceSelect.visible = false;
-				firstPice = null;
+				_firstPice = null;
 			}
 			// Клик на другой фишке
 			else
 			{
-				firstPice.pieceSelect.visible = false;
+				_firstPice.pieceSelect.visible = false;
 				// Тотже ряд, проверяем соседство в колонке
-				if ((firstPice.row == piece.row) && (Math.abs(firstPice.col - piece.col) == 1))
+				if ((_firstPice.row == piece.row) && (Math.abs(_firstPice.col - piece.col) == 1))
 				{
-					makeSwap(firstPice, piece);
-					firstPice = null;
+					makeSwap(_firstPice, piece);
+					_firstPice = null;
 				}
 				// таже колонка проверяем соседство в ряду
-				else if ((firstPice.col == piece.col) && (Math.abs(firstPice.row - piece.row) == 1))
+				else if ((_firstPice.col == piece.col) && (Math.abs(_firstPice.row - piece.row) == 1))
 				{
-					makeSwap(firstPice, piece);
-					firstPice = null;
+					makeSwap(_firstPice, piece);
+					_firstPice = null;
 				}
 				else
 				{
-					firstPice = piece;
-					firstPice.pieceSelect.visible = true;
+					_firstPice = piece;
+					_firstPice.pieceSelect.visible = true;
 				}
 			}
 		}
 		
-		private function makeSwap(firstPice:Piece, secondPiece:Piece):void 
+		private function makeSwap(_firstPice:Piece, secondPiece:Piece):void 
 		{
-			swapPieces(firstPice, secondPiece);
+			swapPieces(_firstPice, secondPiece);
 			
 			// проверяем, был ли обмен удачным
 			if (lookForMatches().length == 0)
 			{
-				swapPieces(firstPice, secondPiece);
+				swapPieces(_firstPice, secondPiece);
 			}
 			else
 			{
-				isSwapping = true;
+				_isSwapping = true;
 			}
 		}
 		
 		// Обмен двух фишек
-		private function swapPieces(firstPice:Piece, secondPiece:Piece):void 
+		private function swapPieces(_firstPice:Piece, secondPiece:Piece):void 
 		{
 			// обмениваем значение row и col
-			var tempCol:uint = firstPice.col;
-			var tempRow:uint = firstPice.row;
-			firstPice.col = secondPiece.col;
-			firstPice.row = secondPiece.row;
+			var tempCol:uint = _firstPice.col;
+			var tempRow:uint = _firstPice.row;
+			_firstPice.col = secondPiece.col;
+			_firstPice.row = secondPiece.row;
 			secondPiece.col = tempCol;
 			secondPiece.row = tempRow;
 			
 			// измменяем позицию в сетке
-			_grid[firstPice.col][firstPice.row] = firstPice;
+			_grid[_firstPice.col][_firstPice.row] = _firstPice;
 			_grid[secondPiece.col][secondPiece.row] = secondPiece;
 		}
 		
@@ -220,15 +231,15 @@ package veganmatch3
 				}
 			}
 			// Все падения завершены
-			if (isDroping && madeMove)
+			if (_isDroping && madeMove)
 			{
-				isDroping = false;
+				_isDroping = false;
 				findAndRemoveMatches();
 			}
 			// Все обмены завершены
-			else if (isSwapping && madeMove)
+			else if (_isSwapping && madeMove)
 			{
-				isSwapping = false;
+				_isSwapping = false;
 				findAndRemoveMatches();
 			}
 		}
@@ -242,12 +253,12 @@ package veganmatch3
 				var numPoints:Number = (matches[i].length - 1) * 50;
 				for (var j:int = 0; j < matches[i].length; j++)
 				{
-					if (gameSprite.contains(matches[i][j]))
+					if (_gameSprite.contains(matches[i][j]))
 					{
 						//var pb = new PointBurst(this, numPoints, matches[i][j].x, matches[i][j].y);
 						addScore(numPoints);
 						matches[i][j].removeEventListener(TouchEvent.TOUCH, clickPiece);
-						gameSprite.removeChild(matches[i][j]);
+						_gameSprite.removeChild(matches[i][j]);
 						_grid[matches[i][j].col][matches[i][j].row] = null;
 						affectAbove(matches[i][j]);
 					}
@@ -356,7 +367,7 @@ package veganmatch3
 					{
 						var newPiece:Piece = addPiece(col, row);
 						newPiece.y = OFFSET_Y - SPACING - SPACING * missingPieces++;
-						isDroping = true;
+						_isDroping = true;
 					}
 				}
 			}
@@ -427,14 +438,14 @@ package veganmatch3
 		
 		private function addScore (numPoints:int):void
 		{
-			gameScore += numPoints;
-			// TODO: Посмотреть как в голодном герое раелизована запись результата
+			_gameScore += numPoints;
+			_scoreText.text = "SCORE: " + _gameScore;
 		}
 		
 		private function endGame()
 		{
 			//сдвигаем в фон
-			setChildIndex(gameSprite, 0);
+			setChildIndex(_gameSprite, 0);
 			// переходим в экран окончания игры
 			// TODO: Требуется доработка
 		}
@@ -443,8 +454,8 @@ package veganmatch3
 		public function cleanUp()
 		{
 			_grid = null;
-			this.removeChild(gameSprite);
-			gameSprite = null;
+			this.removeChild(_gameSprite);
+			_gameSprite = null;
 			removeEventListener(Event.ENTER_FRAME, movePieces);
 		}
 	}
