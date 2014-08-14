@@ -30,7 +30,7 @@ package veganmatch3
 		
 		//=========================================
 		// PRIVATE VARIABLE
-		private var _board:Image; // TODO: Фон поменять на Image
+		private var _board:Image;
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
 		private var _gameSprite:Sprite; // Спрайт для фишек.
@@ -210,19 +210,19 @@ package veganmatch3
 							madeMove = true;
 						}
 						// Смещаем вверх
-						if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
+						else if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
 							_grid[col][row].y -= 5;
 							madeMove = true;
 						}
 						// Смещаем вправо
-						if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X + col * 5)
+						else if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X + col * 5)
 						{
 							_grid[col][row].x += 5;
 							madeMove = true;
 						}
 						// Смещаем влево
-						if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X + col * 5)
+						else if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X + col * 5)
 						{
 							_grid[col][row].x -= 5;
 							madeMove = true;
@@ -366,7 +366,7 @@ package veganmatch3
 					if (_grid[col][row] == null)
 					{
 						var newPiece:Piece = addPiece(col, row);
-						newPiece.y = OFFSET_Y - SPACING - SPACING * missingPieces++;
+						newPiece.y = OFFSET_Y - SPACING - SPACING * missingPieces++ - (row * 5);
 						_isDroping = true;
 					}
 				}
