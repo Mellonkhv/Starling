@@ -64,6 +64,7 @@ package veganmatch3
 			
 		}
 		
+		/// Точка входа в игру (строит сетку и включает слушатель)
 		private function startMatchThree():void 
 		{
 			_grid = new Array();
@@ -75,10 +76,9 @@ package veganmatch3
 			_isDroping = false;
 			_isSwapping = false;
 			_gameScore = 0;
-			//_scoreText.text = "Score: " + _gameScore;
 			this.addEventListener(Event.ENTER_FRAME, movePieces);
 		}
-		
+		/// Создание сетки из случайных фишек и расположение спрайта сетки относительно координат
 		private function setUpGrid():void 
 		{
 			//var check:Boolean = true;
@@ -94,9 +94,9 @@ package veganmatch3
 					}
 				}
 				// Проверка на "3Вряд" на поле
-				//if (lookForMatches().length != 0) continue;// check = false;
+				if (lookForMatches().length != 0) continue;
 				// Проверка на возможность хода
-				//if (lookForPossible() == false) continue;// check = false;
+				if (lookForPossibles() == false) continue;
 				break;
 			}
 			_gameSprite.x = 181;
@@ -268,7 +268,7 @@ package veganmatch3
 			// линий ненайдено проверяем на возможность хода
 			if (matches.length == 0)
 			{
-				if (!lookForPosibles()) endGame();				
+				if (!lookForPossibles()) endGame();				
 			}
 		}
 		
@@ -372,7 +372,7 @@ package veganmatch3
 		}
 		
 		// Проверка на возможные ходы
-		private function lookForPosibles():Boolean
+		private function lookForPossibles():Boolean
 		{
 			for (var col:int = 0; col < 8; col++) 
 			{
