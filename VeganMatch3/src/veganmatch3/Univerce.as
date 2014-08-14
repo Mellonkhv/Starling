@@ -119,6 +119,7 @@ package veganmatch3
 			return newPiece;
 		}
 		
+		/// Щелчёк по фишке с проверкой не выбрана ли ещё одна фишка
 		private function clickPiece(e:TouchEvent):void 
 		{
 			var piece:Piece = Piece(e.currentTarget);
@@ -160,10 +161,11 @@ package veganmatch3
 			}
 		}
 		
+		/// Выбраные фишки меняются местами
 		private function makeSwap(_firstPice:Piece, secondPiece:Piece):void 
 		{
 			swapPieces(_firstPice, secondPiece);
-			
+			// TODO: Воткнуть анимазию смены положения фишками сюда
 			// проверяем, был ли обмен удачным
 			if (lookForMatches().length == 0)
 			{
@@ -175,7 +177,7 @@ package veganmatch3
 			}
 		}
 		
-		// Обмен двух фишек
+		/// Непосредственно сам обмен двух фишек местами
 		private function swapPieces(_firstPice:Piece, secondPiece:Piece):void 
 		{
 			// обмениваем значение row и col
@@ -191,6 +193,7 @@ package veganmatch3
 			_grid[secondPiece.col][secondPiece.row] = secondPiece;
 		}
 		
+		// TODO: Заменить данную анимацию на Tween
 		// Если фишка не наместе двигаем её на него
 		private function movePieces(e:Event):void 
 		{
@@ -242,6 +245,7 @@ package veganmatch3
 			}
 		}
 		
+		/// Поиск и удаление рядов
 		private function findAndRemoveMatches():void 
 		{
 			// Формируем список линий
@@ -272,6 +276,7 @@ package veganmatch3
 			}
 		}
 		
+		/// Непосредственный поиск рядов
 		private function lookForMatches():Array 
 		{
 			var matchList:Array = new Array();
@@ -404,7 +409,7 @@ package veganmatch3
 			return false;
 			
 		}
-		
+		/// Проверка на "ряд" от текущей фишки
 		private function matchPattern(col:uint, row:uint, mustHave:Array, needOne:Array):Boolean 
 		{
 			var thisType:int = _grid[col][row].type;
@@ -427,7 +432,7 @@ package veganmatch3
 			}
 			return false;
 		}
-		
+		/// Проверка совпадения типов
 		private function matchType(col:int, row:int, type:int):Boolean 
 		{
 			if ((col<0) || (col>7)||(row<0)||(row>7)) return false;
