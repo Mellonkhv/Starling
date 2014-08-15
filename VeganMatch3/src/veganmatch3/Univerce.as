@@ -222,6 +222,11 @@ package veganmatch3
 		}
 		
 		// TODO: Заменить данную анимацию на Tween
+		private function tweenDrop(piece:Piece):void
+		{
+			var dropPiece:Piece = piece;
+			
+		}
 		// Если фишка не наместе двигаем её на него
 		private function movePieces(e:Event):void 
 		{
