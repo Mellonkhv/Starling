@@ -43,7 +43,7 @@ package veganmatch3
 		private var _isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var _gameScore:int;
 		private var _scoreText:TextField;
-		//private var _tween:Tween
+		private var _tween:Tween;
 		
 		//=========================================
 		// CONSTRUCTOR
@@ -222,7 +222,7 @@ package veganmatch3
 		}
 		
 		// TODO: Заменить данную анимацию на Tween
-		private function tweenDrop(piece:Piece):void
+		private function tweenMove(piece:Piece):void
 		{
 			var dropPiece:Piece = piece;
 			
@@ -237,10 +237,13 @@ package veganmatch3
 				{
 					if (_grid[col][row] != null)
 					{
-						// Смещаем вни
+						// Смещаем вниз
 						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
-							_grid[col][row].y += 5;
+							//_grid[col][row].y += 5;
+							_tween = new Tween(_grid[col][row], 0.2, Transitions.EASE_IN_OUT)
+							_tween.animate("y", (_grid[col][row].row * SPACING + OFFSET_Y + row * 5));
+							Starling.juggler.add(_tween);
 							madeMove = true;
 						}
 						// Смещаем вверх
