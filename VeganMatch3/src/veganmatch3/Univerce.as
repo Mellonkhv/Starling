@@ -193,7 +193,7 @@ package veganmatch3
 		private function makeSwap(_firstPice:Piece, secondPiece:Piece):void 
 		{
 			swapPieces(_firstPice, secondPiece);
-			// TODO: Воткнуть анимазию смены положения фишками сюда
+			
 			// проверяем, был ли обмен удачным
 			if (lookForMatches().length == 0)
 			{
@@ -208,6 +208,7 @@ package veganmatch3
 		/// Непосредственно сам обмен двух фишек местами
 		private function swapPieces(_firstPice:Piece, secondPiece:Piece):void 
 		{
+			// TODO: Воткнуть анимазию смены положения фишками сюда
 			// обмениваем значение row и col
 			var tempCol:uint = _firstPice.col;
 			var tempRow:uint = _firstPice.row;
