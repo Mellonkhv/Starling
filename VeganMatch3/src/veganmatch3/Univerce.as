@@ -1,5 +1,6 @@
 package veganmatch3 
 {
+	import flash.geom.Point;
 	import starling.animation.Transitions;
 	import starling.animation.Tween;
 	import starling.core.Starling;
@@ -38,7 +39,7 @@ package veganmatch3
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
 		private var _gameSprite:Sprite; // Спрайт для фишек.
-		private var _firstPice:Piece; /// ссылка на первую кликнутую фишку
+		private var _firstPiece:Piece; /// ссылка на первую кликнутую фишку
 		private var _isDroping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var _isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var _gameScore:int;
@@ -154,50 +155,50 @@ package veganmatch3
 			var touches:Vector.<Touch> = e.getTouches(this, TouchPhase.ENDED);
 			if (touches.length == 0) return;
 			// клик на первой фишке
-			if (_firstPice == null)
+			if (_firstPiece == null)
 			{
-				_firstPice = piece;
+				_firstPiece = piece;
 				piece.pieceSelect.visible = true;
 			}
 			// Клик на первой фишке повторно
-			else if (_firstPice == piece)
+			else if (_firstPiece == piece)
 			{
 				piece.pieceSelect.visible = false;
-				_firstPice = null;
+				_firstPiece = null;
 			}
 			// Клик на другой фишке
 			else
 			{
-				_firstPice.pieceSelect.visible = false;
+				_firstPiece.pieceSelect.visible = false;
 				// Тотже ряд, проверяем соседство в колонке
-				if ((_firstPice.row == piece.row) && (Math.abs(_firstPice.col - piece.col) == 1))
+				if ((_firstPiece.row == piece.row) && (Math.abs(_firstPiece.col - piece.col) == 1))
 				{
-					makeSwap(_firstPice, piece);
-					_firstPice = null;
+					makeSwap(_firstPiece, piece);
+					_firstPiece = null;
 				}
 				// таже колонка проверяем соседство в ряду
-				else if ((_firstPice.col == piece.col) && (Math.abs(_firstPice.row - piece.row) == 1))
+				else if ((_firstPiece.col == piece.col) && (Math.abs(_firstPiece.row - piece.row) == 1))
 				{
-					makeSwap(_firstPice, piece);
-					_firstPice = null;
+					makeSwap(_firstPiece, piece);
+					_firstPiece = null;
 				}
 				else
 				{
-					_firstPice = piece;
-					_firstPice.pieceSelect.visible = true;
+					_firstPiece = piece;
+					_firstPiece.pieceSelect.visible = true;
 				}
 			}
 		}
 		
 		/// Выбраные фишки меняются местами
-		private function makeSwap(_firstPice:Piece, secondPiece:Piece):void 
+		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
 		{
-			swapPieces(_firstPice, secondPiece);
+			swapPieces(firstPiece, secondPiece);
 			
 			// проверяем, был ли обмен удачным
 			if (lookForMatches().length == 0)
 			{
-				swapPieces(_firstPice, secondPiece);
+				swapPieces(firstPiece, secondPiece);
 			}
 			else
 			{
@@ -206,19 +207,19 @@ package veganmatch3
 		}
 		
 		/// Непосредственно сам обмен двух фишек местами
-		private function swapPieces(_firstPice:Piece, secondPiece:Piece):void 
+		private function swapPieces(firstPiece:Piece, secondPiece:Piece):void 
 		{
 			// TODO: Воткнуть анимазию смены положения фишками сюда
 			// обмениваем значение row и col
-			var tempCol:uint = _firstPice.col;
-			var tempRow:uint = _firstPice.row;
-			_firstPice.col = secondPiece.col;
-			_firstPice.row = secondPiece.row;
+			var tempCol:uint = firstPiece.col;
+			var tempRow:uint = firstPiece.row;
+			firstPiece.col = secondPiece.col;
+			firstPiece.row = secondPiece.row;
 			secondPiece.col = tempCol;
 			secondPiece.row = tempRow;
 			
 			// измменяем позицию в сетке
-			_grid[_firstPice.col][_firstPice.row] = _firstPice;
+			_grid[_firstPiece.col][_firstPiece.row] = _firstPiece;
 			_grid[secondPiece.col][secondPiece.row] = secondPiece;
 		}
 		
