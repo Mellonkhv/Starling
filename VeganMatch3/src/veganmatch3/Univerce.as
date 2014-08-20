@@ -64,7 +64,10 @@ package veganmatch3
 			//this.addChild(_board);
 			/// Запуск игры
 			startMatchThree();
-			
+			trace(Math.floor(8 / 8));
+			trace(Math.floor(19 / 8));
+			trace(24 % 8);
+			trace(19 % 8);
 			/// Вывод набраных очков
 			addScoreText();
 			
