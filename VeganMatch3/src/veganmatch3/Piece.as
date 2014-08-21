@@ -39,7 +39,7 @@ package veganmatch3
 			pieceSelect.visible = false;
 			this.addChild(pieceSelect);
 			
-			_pieceImage = new Image(Assets.getAtlas().getTexture("title_0" + _type));
+			_pieceImage = new Image(Assets.getAtlas().getTexture("title_" + _type));
 			_pieceImage.x = 0;
 			_pieceImage.y = 0;
 			this.addChild(_pieceImage);

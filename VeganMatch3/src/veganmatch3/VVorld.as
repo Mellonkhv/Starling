@@ -11,9 +11,13 @@ package veganmatch3
 	public class VVorld extends Sprite 
 	{
 		static public const FIELD_SIZE:uint = 8;
-		static public const TILE_TYPE:uint = 6;
+		static public const TILE_TYPE:uint = 20;
+		static public const SPACING:uint = 45;
+		static public const OFFSET_X:uint = 10;
+		static public const OFFSET_Y:uint = 10;
 		private var _grid:Array = new Array(FIELD_SIZE*FIELD_SIZE);
 		private var _board:Image;
+		private var _gameField:Sprite;
 		
 		public function VVorld() 
 		{
@@ -28,22 +32,30 @@ package veganmatch3
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			gridGenerate(); /// Генерация поля
 			
-			_board = new Image(Assets.getTexture("BackGroundImg"));
-			addChild(_board);
+			//_board = new Image(Assets.getTexture("BackGroundImg"));
+			//addChild(_board);
 			this.addEventListener(Event.ENTER_FRAME, update);
 		}
-		
+		/// Генерирование игрового поля
 		private function gridGenerate():void 
 		{
+			_gameField = new Sprite();
 			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
 			{
 				do
 				{
 					_grid[i] = new Piece();
-					_grid[i].type = Math.ceil(Math.random() * TILE_TYPE);
+					_grid[i].type = Math.ceil((Math.random() * TILE_TYPE));
 				}
 				while (isHorizontalMatch(i) || isVerticalMatch(i));
+				
+				_grid[i].x = (colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5);
+				_grid[i].y = (rowNumber(i) * SPACING) + OFFSET_X + (rowNumber(i) * 5);
+				_gameField.addChild(_grid[i]);
 			}
+			_gameField.x = 181;
+			_gameField.y = 29;
+			this.addChild(_gameField);
 		}
 		
 		private function isVerticalMatch(i:int):Boolean 
