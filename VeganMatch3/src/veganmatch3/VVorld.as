@@ -40,7 +40,7 @@ package veganmatch3
 				do
 				{
 					_grid[i] = new Piece();
-					_grid[i].type = Math.ceil(Math.random * TILE_TYPE);
+					_grid[i].type = Math.ceil(Math.random() * TILE_TYPE);
 				}
 				while (isHorizontalMatch(i) || isVerticalMatch(i));
 			}
@@ -48,12 +48,22 @@ package veganmatch3
 		
 		private function isVerticalMatch(i:int):Boolean 
 		{
-			
+			return rowNumber(i) >= 2 && _grid[i] == _grid[i - FIELD_SIZE] && _grid[i] == _grid[i - 2 * FIELD_SIZE];
 		}
 		
 		private function isHorizontalMatch(i:int):Boolean 
 		{
-			
+			return colNumber(i) >= 2 && _grid[i] == _grid[i - 1] && _grid[i] == _grid[i - 2] && rowNumber(i) == rowNumber(i - 2);
+		}
+		
+		private function colNumber(i:int):Number 
+		{
+			return i % FIELD_SIZE;
+		}
+		
+		private function rowNumber(i:int):Number 
+		{
+			return Math.floor(i / FIELD_SIZE);
 		}
 		
 		private function update(e:Event):void 
