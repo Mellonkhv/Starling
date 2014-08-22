@@ -3,6 +3,9 @@ package veganmatch3
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	/**
 	 * ...
@@ -11,13 +14,14 @@ package veganmatch3
 	public class VVorld extends Sprite 
 	{
 		static public const FIELD_SIZE:uint = 8;
-		static public const TILE_TYPE:uint = 20;
+		static public const TILE_TYPE:uint = 8;
 		static public const SPACING:uint = 45;
 		static public const OFFSET_X:uint = 10;
 		static public const OFFSET_Y:uint = 10;
 		private var _grid:Array = new Array(FIELD_SIZE*FIELD_SIZE);
 		private var _board:Image;
 		private var _gameField:Sprite;
+		private var _firstPiece:Piece;
 		
 		public function VVorld() 
 		{
@@ -51,31 +55,60 @@ package veganmatch3
 				
 				_grid[i].x = (colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5);
 				_grid[i].y = (rowNumber(i) * SPACING) + OFFSET_X + (rowNumber(i) * 5);
+				
+				_grid[i].addEventListener(TouchEvent.TOUCH, clickTile);
+				
 				_gameField.addChild(_grid[i]);
 			}
 			_gameField.x = 181;
 			_gameField.y = 29;
 			this.addChild(_gameField);
 		}
-		
+		/// Возвращает true если фишка с индексом находится в вертикальном "ряду"
 		private function isVerticalMatch(i:int):Boolean 
 		{
-			return rowNumber(i) >= 2 && _grid[i] == _grid[i - FIELD_SIZE] && _grid[i] == _grid[i - 2 * FIELD_SIZE];
+			return rowNumber(i) >= 2 && _grid[i].type == _grid[i - FIELD_SIZE].type && _grid[i].type == _grid[i - 2 * FIELD_SIZE].type;
 		}
-		
+		/// Возвращает true если фишка с индексом находится в горизонтальном "ряду"
 		private function isHorizontalMatch(i:int):Boolean 
 		{
-			return colNumber(i) >= 2 && _grid[i] == _grid[i - 1] && _grid[i] == _grid[i - 2] && rowNumber(i) == rowNumber(i - 2);
+			return colNumber(i) >= 2 && _grid[i].type == _grid[i - 1].type && _grid[i].type == _grid[i - 2].type && rowNumber(i) == rowNumber(i - 2);
 		}
-		
+		/// Возвращает номер колонки
 		private function colNumber(i:int):Number 
 		{
 			return i % FIELD_SIZE;
 		}
-		
+		/// Возвращает номер строки
 		private function rowNumber(i:int):Number 
 		{
 			return Math.floor(i / FIELD_SIZE);
+		}
+		
+		private function clickTile(e:TouchEvent):void 
+		{
+			var piece:Piece = Piece(e.currentTarget);
+			var touches:Vector.<Touch> = e.getTouches(this, TouchPhase.ENDED);
+			if (touches.length == 0) return;
+			/// Клик на первой плитке
+			if (_firstPiece == null)
+			{
+				_firstPiece = piece;
+				piece.pieceSelect.visible = true;
+			}
+			/// Клик на первой повторно
+			else if (_firstPiece = piece)
+			{
+				piece.pieceSelect.visible = false;
+				_firstPiece = null;
+			}
+			/// Клик на другой фишке
+			else
+			{
+				_firstPiece.pieceSelect.visible = false;
+				/// Тотже ряд, проверяем соседство в колонке
+				
+			}
 		}
 		
 		private function update(e:Event):void 
