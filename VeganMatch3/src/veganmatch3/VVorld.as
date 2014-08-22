@@ -55,7 +55,7 @@ package veganmatch3
 				
 				_grid[i].x = (colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5);
 				_grid[i].y = (rowNumber(i) * SPACING) + OFFSET_X + (rowNumber(i) * 5);
-				
+				_grid[i].index = i;
 				_grid[i].addEventListener(TouchEvent.TOUCH, clickTile);
 				
 				_gameField.addChild(_grid[i]);
@@ -84,7 +84,7 @@ package veganmatch3
 		{
 			return Math.floor(i / FIELD_SIZE);
 		}
-		
+		/// Клик по плиткам
 		private function clickTile(e:TouchEvent):void 
 		{
 			var piece:Piece = Piece(e.currentTarget);
@@ -97,7 +97,7 @@ package veganmatch3
 				piece.pieceSelect.visible = true;
 			}
 			/// Клик на первой повторно
-			else if (_firstPiece = piece)
+			else if (_firstPiece == piece)
 			{
 				piece.pieceSelect.visible = false;
 				_firstPiece = null;
@@ -107,7 +107,20 @@ package veganmatch3
 			{
 				_firstPiece.pieceSelect.visible = false;
 				/// Тотже ряд, проверяем соседство в колонке
-				
+				if (rowNumber(_firstPiece.index) == rowNumber(piece.index) && Math.abs(colNumber(_firstPiece.index) - colNumber(piece.index)) == 1)
+				{
+					_firstPiece = null;
+				}
+				/// таже колонка проверяем соседство в ряду
+				else if (colNumber(_firstPiece.index) == colNumber(piece.index) && Math.abs(rowNumber(_firstPiece.index) - rowNumber(piece.index)) == 1)
+				{
+					_firstPiece = null;
+				}
+				else
+				{
+					_firstPiece = piece;
+					_firstPiece.pieceSelect.visible = true;
+				}
 			}
 		}
 		

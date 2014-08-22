@@ -12,6 +12,7 @@ package veganmatch3
 	{
 		private var _type:int;
 		private var _pieceImage:Image;
+		private var _index:int;
 		private var _col:uint;
 		private var _row:uint;
 		
@@ -73,6 +74,16 @@ package veganmatch3
 		public function set row(value:uint):void 
 		{
 			_row = value;
+		}
+		
+		public function get index():int 
+		{
+			return _index;
+		}
+		
+		public function set index(value:int):void 
+		{
+			_index = value;
 		}
 		
 	}
