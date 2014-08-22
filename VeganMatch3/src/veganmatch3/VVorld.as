@@ -109,11 +109,13 @@ package veganmatch3
 				/// Тотже ряд, проверяем соседство в колонке
 				if (rowNumber(_firstPiece.index) == rowNumber(piece.index) && Math.abs(colNumber(_firstPiece.index) - colNumber(piece.index)) == 1)
 				{
+					makeSwap(_firstPiece, piece);
 					_firstPiece = null;
 				}
 				/// таже колонка проверяем соседство в ряду
 				else if (colNumber(_firstPiece.index) == colNumber(piece.index) && Math.abs(rowNumber(_firstPiece.index) - rowNumber(piece.index)) == 1)
 				{
+					makeSwap(_firstPiece, piece);
 					_firstPiece = null;
 				}
 				else
@@ -122,6 +124,11 @@ package veganmatch3
 					_firstPiece.pieceSelect.visible = true;
 				}
 			}
+		}
+		
+		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
+		{
+			
 		}
 		
 		private function update(e:Event):void 
