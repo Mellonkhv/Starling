@@ -138,6 +138,10 @@ package veganmatch3
 		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
 		{
 			tweenTile(firstPiece, secondPiece);
+			
+			trace (isHorizontalMatch(firstPiece.index) + " " + isVerticalMatch(firstPiece.index) + " " + isHorizontalMatch(secondPiece.index) + " " + isVerticalMatch(secondPiece.index));
+			trace (firstPiece.index + " " + secondPiece.index);
+			
 			if ((isHorizontalMatch(firstPiece.index) || isVerticalMatch(firstPiece.index)) || (isHorizontalMatch(secondPiece.index) || isVerticalMatch(secondPiece.index)))
 			{
 				_isSwapping = true;
@@ -172,7 +176,8 @@ package veganmatch3
 			var tempIndex:int = firstPiece.index;
 			firstPiece.index = secondPiece.index;
 			secondPiece.index = tempIndex;
-			
+			trace(tempIndex + " " + firstPiece.index + " " + secondPiece.index);
+			/// вот тут косяк
 			_grid[firstPiece.index] = firstPiece;
 			_grid[secondPiece.index] = secondPiece;
 		}
