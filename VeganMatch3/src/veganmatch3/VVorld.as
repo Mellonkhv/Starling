@@ -1,5 +1,9 @@
 package veganmatch3 
 {
+	import flash.geom.Point;
+	import starling.animation.Transitions;
+	import starling.animation.Tween;
+	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
@@ -22,6 +26,8 @@ package veganmatch3
 		private var _board:Image;
 		private var _gameField:Sprite;
 		private var _firstPiece:Piece;
+		private var _isSwapping:Boolean;
+		private var _isDroping:Boolean;
 		
 		public function VVorld() 
 		{
@@ -43,6 +49,9 @@ package veganmatch3
 		/// Генерирование игрового поля
 		private function gridGenerate():void 
 		{
+			_isDroping = false;
+			_isSwapping = false;
+			
 			_gameField = new Sprite();
 			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
 			{
@@ -128,7 +137,44 @@ package veganmatch3
 		
 		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
 		{
+			tweenTile(firstPiece, secondPiece);
+			if ((isHorizontalMatch(firstPiece.index) || isVerticalMatch(firstPiece.index)) || (isHorizontalMatch(secondPiece.index) || isVerticalMatch(secondPiece.index)))
+			{
+				_isSwapping = true;
+			}
+			else
+			{
+				tweenTile(firstPiece, secondPiece);
+			}
+		}
+		
+		private function tweenTile(firstPiece:Piece, secondPiece:Piece):void 
+		{
+			var firstPos:Point = new Point(firstPiece.x, firstPiece.y);
+			var secondPos:Point = new Point(secondPiece.x, secondPiece.y);
+			var tweenfirst:Tween = new Tween(firstPiece, 0.5, Transitions.EASE_OUT);
+			var tweensecond:Tween = new Tween(secondPiece, 0.5, Transitions.EASE_OUT);
 			
+			tweenfirst.animate("x", secondPos.x);
+			tweenfirst.animate("y", secondPos.y);
+			
+			tweensecond.animate("x", firstPos.x);
+			tweensecond.animate("y", firstPos.y);
+			
+			tweenfirst.onComplete = function():void { swapTiles(firstPiece, secondPiece); }
+			
+			Starling.juggler.add(tweenfirst);
+			Starling.juggler.add(tweensecond);
+		}
+		
+		private function swapTiles(firstPiece:Piece, secondPiece:Piece):void 
+		{
+			var tempIndex:int = firstPiece.index;
+			firstPiece.index = secondPiece.index;
+			secondPiece.index = tempIndex;
+			
+			_grid[firstPiece.index] = firstPiece;
+			_grid[secondPiece.index] = secondPiece;
 		}
 		
 		private function update(e:Event):void 
