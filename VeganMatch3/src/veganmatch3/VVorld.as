@@ -118,16 +118,12 @@ package veganmatch3
 				/// Тотже ряд, проверяем соседство в колонке
 				if (rowNumber(_firstPiece.index) == rowNumber(piece.index) && Math.abs(colNumber(_firstPiece.index) - colNumber(piece.index)) == 1)
 				{
-					//makeSwap(_firstPiece, piece);
-					tweenTile(_firstPiece, piece);
-					
+					makeSwap(_firstPiece, piece);					
 				}
 				/// таже колонка проверяем соседство в ряду
 				else if (colNumber(_firstPiece.index) == colNumber(piece.index) && Math.abs(rowNumber(_firstPiece.index) - rowNumber(piece.index)) == 1)
 				{
-					//makeSwap(_firstPiece, piece);
-					tweenTile(_firstPiece, piece);
-					
+					makeSwap(_firstPiece, piece);
 				}
 				else
 				{
@@ -139,11 +135,11 @@ package veganmatch3
 		
 		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
 		{
-			
+			tweenTile(firstPiece, secondPiece);
 			//trace("first: " + firstPiece.index + ", second: " + secondPiece.index + ", _first " + _firstPiece.index);
 			if (lookForMatches().length == 0)
 			{
-				tweenTile(firstPiece, secondPiece, true);
+				tweenTile(firstPiece, secondPiece);
 			}
 			else
 			{
@@ -161,12 +157,12 @@ package veganmatch3
 			return matchList;
 		}
 		
-		private function tweenTile(firstPiece:Piece, secondPiece:Piece, reverce:Boolean = false):void 
+		private function tweenTile(firstPiece:Piece, secondPiece:Piece):void 
 		{
 			var firstPos:Point = new Point(firstPiece.x, firstPiece.y);
 			var secondPos:Point = new Point(secondPiece.x, secondPiece.y);
-			var tweenfirst:Tween = new Tween(firstPiece, 0.5, Transitions.EASE_OUT);
-			var tweensecond:Tween = new Tween(secondPiece, 0.5, Transitions.EASE_OUT);
+			var tweenfirst:Tween = new Tween(firstPiece, 0.3, Transitions.EASE_OUT);
+			var tweensecond:Tween = new Tween(secondPiece, 0.3, Transitions.EASE_OUT);
 			
 			tweenfirst.animate("x", secondPos.x);
 			tweenfirst.animate("y", secondPos.y);
@@ -174,16 +170,7 @@ package veganmatch3
 			tweensecond.animate("x", firstPos.x);
 			tweensecond.animate("y", firstPos.y);
 			
-			if(reverce == false)
-			{
-				tweenfirst.onComplete = function():void { makeSwap(_firstPiece, secondPiece); swapTiles(firstPiece, secondPiece); }
-			}
-			else
-			{
-				tweenfirst.onComplete = function():void { Starling.juggler.remove(tweenfirst); }
-				tweensecond.onComplete = function():void { Starling.juggler.remove(tweensecond); }
-				_firstPiece = null;
-			}
+			tweenfirst.onComplete = function():void { swapTiles(firstPiece, secondPiece); }
 			
 			Starling.juggler.add(tweenfirst);
 			Starling.juggler.add(tweensecond);
@@ -192,6 +179,10 @@ package veganmatch3
 		private function swapTiles(firstPiece:Piece, secondPiece:Piece):void 
 		{
 			dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
+			
+			firstPiece.addEventListener(TouchEvent.TOUCH, clickTile);
+			secondPiece.addEventListener(TouchEvent.TOUCH, clickTile);
+			
 			var tempIndex:int = firstPiece.index;
 			trace("temp: " + tempIndex + ", first: " + firstPiece.index + ", second: " + secondPiece.index);
 			firstPiece.index = secondPiece.index;
