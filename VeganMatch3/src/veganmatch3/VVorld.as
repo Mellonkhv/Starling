@@ -118,14 +118,16 @@ package veganmatch3
 				/// Тотже ряд, проверяем соседство в колонке
 				if (rowNumber(_firstPiece.index) == rowNumber(piece.index) && Math.abs(colNumber(_firstPiece.index) - colNumber(piece.index)) == 1)
 				{
-					makeSwap(_firstPiece, piece);
-					_firstPiece = null;
+					//makeSwap(_firstPiece, piece);
+					tweenTile(_firstPiece, piece);
+					
 				}
 				/// таже колонка проверяем соседство в ряду
 				else if (colNumber(_firstPiece.index) == colNumber(piece.index) && Math.abs(rowNumber(_firstPiece.index) - rowNumber(piece.index)) == 1)
 				{
-					makeSwap(_firstPiece, piece);
-					_firstPiece = null;
+					//makeSwap(_firstPiece, piece);
+					tweenTile(_firstPiece, piece);
+					
 				}
 				else
 				{
@@ -137,22 +139,29 @@ package veganmatch3
 		
 		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
 		{
-			tweenTile(firstPiece, secondPiece);
 			
-			trace (isHorizontalMatch(firstPiece.index) + " " + isVerticalMatch(firstPiece.index) + " " + isHorizontalMatch(secondPiece.index) + " " + isVerticalMatch(secondPiece.index));
-			trace (firstPiece.index + " " + secondPiece.index);
-			
-			if ((isHorizontalMatch(firstPiece.index) || isVerticalMatch(firstPiece.index)) || (isHorizontalMatch(secondPiece.index) || isVerticalMatch(secondPiece.index)))
+			//trace("first: " + firstPiece.index + ", second: " + secondPiece.index + ", _first " + _firstPiece.index);
+			if (lookForMatches().length == 0)
 			{
-				_isSwapping = true;
+				tweenTile(firstPiece, secondPiece, true);
 			}
 			else
 			{
-				tweenTile(firstPiece, secondPiece);
+				_firstPiece = null;
+				_isSwapping = true;
 			}
 		}
 		
-		private function tweenTile(firstPiece:Piece, secondPiece:Piece):void 
+		/// Непосредственный поиск рядов
+		private function lookForMatches():Array
+		{
+			var matchList:Array = [];
+			/// поиск по горизонтали
+			
+			return matchList;
+		}
+		
+		private function tweenTile(firstPiece:Piece, secondPiece:Piece, reverce:Boolean = false):void 
 		{
 			var firstPos:Point = new Point(firstPiece.x, firstPiece.y);
 			var secondPos:Point = new Point(secondPiece.x, secondPiece.y);
@@ -165,7 +174,16 @@ package veganmatch3
 			tweensecond.animate("x", firstPos.x);
 			tweensecond.animate("y", firstPos.y);
 			
-			tweenfirst.onComplete = function():void { swapTiles(firstPiece, secondPiece); }
+			if(reverce == false)
+			{
+				tweenfirst.onComplete = function():void { makeSwap(_firstPiece, secondPiece); swapTiles(firstPiece, secondPiece); }
+			}
+			else
+			{
+				tweenfirst.onComplete = function():void { Starling.juggler.remove(tweenfirst); }
+				tweensecond.onComplete = function():void { Starling.juggler.remove(tweensecond); }
+				_firstPiece = null;
+			}
 			
 			Starling.juggler.add(tweenfirst);
 			Starling.juggler.add(tweensecond);
@@ -173,13 +191,15 @@ package veganmatch3
 		
 		private function swapTiles(firstPiece:Piece, secondPiece:Piece):void 
 		{
+			dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
 			var tempIndex:int = firstPiece.index;
+			trace("temp: " + tempIndex + ", first: " + firstPiece.index + ", second: " + secondPiece.index);
 			firstPiece.index = secondPiece.index;
 			secondPiece.index = tempIndex;
-			trace(tempIndex + " " + firstPiece.index + " " + secondPiece.index);
 			/// вот тут косяк
 			_grid[firstPiece.index] = firstPiece;
 			_grid[secondPiece.index] = secondPiece;
+			trace("temp: " + tempIndex + ", first: " + firstPiece.index + ", second: " + secondPiece.index + ", grid[" + firstPiece.index + "] :" + _grid[firstPiece.index].index + ", grid[" + secondPiece.index + "] :" + _grid[secondPiece.index].index);
 		}
 		
 		private function update(e:Event):void 
