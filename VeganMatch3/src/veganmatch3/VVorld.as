@@ -140,6 +140,7 @@ package veganmatch3
 			if (lookForMatches().length == 0)
 			{
 				tweenTile(firstPiece, secondPiece);
+				_firstPiece = null;
 			}
 			else
 			{
