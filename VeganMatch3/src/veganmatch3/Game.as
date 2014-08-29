@@ -12,7 +12,8 @@ package veganmatch3
 		//=========================================
 		// PRIVATE VARIABLE
 		//private var _universe:Univerce;
-		private var _world:VVorld;
+		//private var _world:VVorld;
+		private var _gameBourd:GameBoard;
 		
 		//=========================================
 		// CONSTRUCTOR
@@ -31,8 +32,10 @@ package veganmatch3
 			
 			//_universe = new Univerce();
 			//addChild(_universe);
-			_world = new VVorld();
-			addChild(_world);
+			//_world = new VVorld();
+			//addChild(_world);
+			_gameBourd = new GameBoard();
+			addChild(_gameBourd);
 		}
 	}
 

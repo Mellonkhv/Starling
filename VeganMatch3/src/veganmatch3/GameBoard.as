@@ -1,7 +1,11 @@
 package veganmatch3 
 {
+	import adobe.utils.CustomActions;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.events.Touch;
+	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	/**
 	 * ...
@@ -9,15 +13,23 @@ package veganmatch3
 	 */
 	public class GameBoard extends Sprite 
 	{
-		
+		//==============================
+		// PUBLIC CONSTANTS
 		static public const FIELD_SIZE:int = 8;
+		static public const TILE_TYPE:uint = 8;
+		static public const SPACING:int = 45;
+		static public const OFFSET_X:uint = 10;
+		static public const OFFSET_Y:uint = 10;
 		
 		//==============================
 		// PRIVATE WARIABLE
 		private var _isDroping:Boolean;
 		private var _isSwapping:Boolean;
 		private var _gameField:Sprite;
+		private var _grid:Vector.<Piece> = new Vector.<Piece>;
 		
+		//==============================
+		// CONSTRUCTOR
 		public function GameBoard() 
 		{
 			super();
@@ -25,6 +37,8 @@ package veganmatch3
 			else this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
 		
+		//==============================
+		// PRIVATE METODS
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
@@ -33,12 +47,12 @@ package veganmatch3
 			
 			this.addEventListener(Event.ENTER_FRAME, update);
 		}
-		
+		/// Генерирование игровой сетки
 		private function generateGrid():void 
 		{
 			_isDroping = false;
 			_isSwapping = false;
-			
+			_grid.length = FIELD_SIZE * FIELD_SIZ
 			_gameField = new Sprite();
 			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
 			{
@@ -64,7 +78,36 @@ package veganmatch3
 		{
 			
 		}
+		// Клик по плиткам
+		private function clickTile(e:TouchEvent):void 
+		{
+			var piece:Piece = Piece(e.currentTarget);
+			var touch:Touch = e.getTouch(piece, TouchPhase.ENDED);
+			if (touch == null) return;
+			
+			
+		}
 		
+		// Возвращает true если фишка с индексом находится в горизонтальном "ряду"
+		private function isHorizontalMatch(i:int):Boolean 
+		{
+			return colNumber(i) >= 2 && _grid[i].type == _grid[i - 1].type && _grid[i].type == _grid[i - 2].type && rowNumber(i) == rowNumber(i - 2);
+		}
+		// Возвращает true если фишка с индексом находится в вертикальном "ряду"
+		private function isVerticalMatch(i:int):Boolean 
+		{
+			return rowNumber(i) >= 2 && _grid[i].type == _grid[i - FIELD_SIZE].type && _grid[i].type == _grid[i - 2 * FIELD_SIZE].type;
+		}
+		// Возвращает номер колонки
+		private function colNumber(i:int):Number 
+		{
+			return i % FIELD_SIZE;
+		}
+		// Возвращает номер строки
+		private function rowNumber(i:int):Number 
+		{
+			return Math.floor(i / FIELD_SIZE);
+		}
 	}
 
 }
