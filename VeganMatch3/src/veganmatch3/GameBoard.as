@@ -104,12 +104,14 @@ package veganmatch3
 				// Тотже ряд, проверка на соседство в колонке
 				if ((rowNumber(_firstPiece.index) == rowNumber(piece.index)) && (Math.abs(colNumber(_firstPiece.index) - colNumber(piece.index)) == 1))
 				{
-					
+					makeSwap(_firstPiece, piece);
+					_firstPiece = null;
 				}
 				// Таже колонка, проверка на соседство в ряду
 				else if ((colNumber(_firstPiece.index) == colNumber(piece.index)) && (Math.abs(rowNumber(_firstPiece.index) - rowNumber(piece.index)) == 1))
 				{
-					
+					makeSwap(_firstPiece, piece);
+					_firstPiece = null;
 				}
 				// Нет соседства
 				else
@@ -118,6 +120,11 @@ package veganmatch3
 					_firstPiece.pieceSelect.visible = true;
 				}				
 			}
+		}
+		
+		private function makeSwap(firstPiece:Piece, piece:Piece):void 
+		{
+			
 		}
 		
 		// Возвращает true если фишка с индексом находится в горизонтальном "ряду"
