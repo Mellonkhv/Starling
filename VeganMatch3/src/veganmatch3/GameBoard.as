@@ -27,6 +27,7 @@ package veganmatch3
 		private var _isSwapping:Boolean;
 		private var _gameField:Sprite;
 		private var _grid:Vector.<Piece> = new Vector.<Piece>;
+		private var _firstPiece:Piece;
 		
 		//==============================
 		// CONSTRUCTOR
@@ -84,8 +85,39 @@ package veganmatch3
 			var piece:Piece = Piece(e.currentTarget);
 			var touch:Touch = e.getTouch(piece, TouchPhase.ENDED);
 			if (touch == null) return;
-			
-			
+			// Клик по первой плитке
+			if (_firstPiece == null)
+			{
+				piece.pieceSelect.visible = true;
+				_firstPiece = piece;
+			}
+			// Повторный клик по первой плитке
+			else if (_firstPiece == piece)
+			{
+				piece.pieceSelect.visible = false;
+				_firstPiece = null;
+			}
+			// Клил по второй плитке
+			else if (_firstPiece != null && _firstPiece != piece)
+			{
+				_firstPiece.pieceSelect.visible = false;
+				// Тотже ряд, проверка на соседство в колонке
+				if ((rowNumber(_firstPiece.index) == rowNumber(piece.index)) && (Math.abs(colNumber(_firstPiece.index) - colNumber(piece.index)) == 1))
+				{
+					
+				}
+				// Таже колонка, проверка на соседство в ряду
+				else if ((colNumber(_firstPiece.index) == colNumber(piece.index)) && (Math.abs(rowNumber(_firstPiece.index) - rowNumber(piece.index)) == 1))
+				{
+					
+				}
+				// Нет соседства
+				else
+				{
+					_firstPiece = piece;
+					_firstPiece.pieceSelect.visible = true;
+				}				
+			}
 		}
 		
 		// Возвращает true если фишка с индексом находится в горизонтальном "ряду"
