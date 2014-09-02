@@ -15,7 +15,7 @@ package veganmatch3
 	{
 		//==============================
 		// PUBLIC CONSTANTS
-		static public const FIELD_SIZE:int = 8;
+		static public const FIELD_SIZE:uint = 8;
 		static public const TILE_TYPE:uint = 8;
 		static public const SPACING:int = 45;
 		static public const OFFSET_X:uint = 10;
@@ -53,7 +53,7 @@ package veganmatch3
 		{
 			_isDroping = false;
 			_isSwapping = false;
-			_grid.length = FIELD_SIZE * FIELD_SIZ
+			_grid.length = FIELD_SIZE * FIELD_SIZE;
 			_gameField = new Sprite();
 			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
 			{
@@ -122,9 +122,19 @@ package veganmatch3
 			}
 		}
 		
-		private function makeSwap(firstPiece:Piece, piece:Piece):void 
+		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
 		{
+			swapTiles(firstPiece, secondPiece);
 			
+			// проверка был ли обмен удачным
+			if (lookForMathes().length == 0)
+			{
+				swapTiles(firstPiece, secondPiece);
+			}
+			else
+			{
+				_isSwapping = true;
+			}
 		}
 		
 		// Возвращает true если фишка с индексом находится в горизонтальном "ряду"
