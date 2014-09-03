@@ -125,7 +125,7 @@ package veganmatch3
 		/// Поиск и удаление рядов
 		private function findAndRemoveMatches():void 
 		{
-			// получаем список плиток которые "вряд"
+			// получаем список линий
 			var matchs:Array = lookForMatches();
 			for (var i:int = 0; i < matchs.length; i++) 
 			{
@@ -146,7 +146,7 @@ package veganmatch3
 			// Добавляем новые плитки на верх поля
 			addNewTiles();
 			
-			// Нет плиток кторые "вряд", возможно игра закончилась?
+			// Нет ниодной линии, возможно игра закончилась?
 			if (matchs.length == 0)
 			{
 				if (!lookForPossibles())
@@ -154,6 +154,27 @@ package veganmatch3
 					endGame();
 				}
 			}
+		}
+		
+		/// Возвращает массив всех найденых линий
+		private function lookForMatches():Array 
+		{
+			var matchList:Array = [];
+			// поиск горизонтальных и вертикальных линий (похоже тут будет спагетикод или нет)
+			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
+			{
+				var match:Array = getMatch(i);
+			}
+		}
+		
+		private function lookForPossibles():Boolean 
+		{
+			
+		}
+		
+		private function addNewTiles():void 
+		{
+			
 		}
 		
 		/// Клик по плиткам
