@@ -1,6 +1,7 @@
 package veganmatch3 
 {
 	import adobe.utils.CustomActions;
+	import flash.geom.Point;
 	import starling.display.Sprite;
 	import starling.events.Event;
 	import starling.events.Touch;
@@ -64,7 +65,7 @@ package veganmatch3
 				while (isHorizontalMatch(i) || isVerticalMatch(i));
 				
 				_grid[i].x = (colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5);
-				_grid[i].y = (rowNumber(i) * SPACING) + OFFSET_X + (rowNumber(i) * 5);
+				_grid[i].y = (rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5);
 				_grid[i].index = i;
 				_grid[i].addEventListener(TouchEvent.TOUCH, clickTile);
 				
@@ -74,12 +75,54 @@ package veganmatch3
 			_gameField.y = 29;
 			this.addChild(_gameField);
 		}
-		
+		/// Обновление состояния плиток
 		private function update(e:Event):void 
 		{
-			
+			var madeMove:Boolean = false;
+			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
+			{
+				if (_grid[i] != null)
+				{
+					// Смещаем вниз
+					var xx:int = ((rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5));
+					trace(xx);
+					if (_grid[i].y < ((rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5)))
+					{
+						_grid[i].y += 5;
+						madeMove = true;
+					}
+					// Смещаем в верх
+					else if (_grid[i].y > ((rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5)))
+					{
+						_grid[i].y -= 5;
+						madeMove = true;
+					}
+					if (_grid[i].x < ((colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5)))
+					{
+						_grid[i].x += 5;
+						madeMove = true;
+					}
+					else if (_grid[i].x > ((colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5)))
+					{
+						_grid[i].x -= 5;
+						madeMove = true;
+					}
+					
+				}
+			}
+			// Если все падения завершены
+			if (isDropping && !madeMove) {
+				isDropping = false;
+				findAndRemoveMatches();
+				
+			// Если все замены завершены
+			} else if (isSwapping && !madeMove) {
+				isSwapping = false;
+				findAndRemoveMatches();
+			}
 		}
-		// Клик по плиткам
+		
+		/// Клик по плиткам
 		private function clickTile(e:TouchEvent):void 
 		{
 			var piece:Piece = Piece(e.currentTarget);
@@ -121,13 +164,13 @@ package veganmatch3
 				}				
 			}
 		}
-		
+		/// Начало обмена 2х фишек
 		private function makeSwap(firstPiece:Piece, secondPiece:Piece):void 
 		{
 			swapTiles(firstPiece, secondPiece);
 			
 			// проверка был ли обмен удачным
-			if (lookForMathes().length == 0)
+			if (lookForMatches().length == 0)
 			{
 				swapTiles(firstPiece, secondPiece);
 			}
@@ -136,23 +179,33 @@ package veganmatch3
 				_isSwapping = true;
 			}
 		}
+		/// Непосредственный обмен 2х фишек
+		private function swapTiles(firstPiece:Piece, secondPiece:Piece):void 
+		{
+			var tempIndex:int = firstPiece.index;
+			firstPiece.index = secondPiece.index;
+			secondPiece.index = tempIndex;
+			
+			_grid[firstPiece.index] = firstPiece;
+			_grid[secondPiece.index] = secondPiece;
+		}
 		
-		// Возвращает true если фишка с индексом находится в горизонтальном "ряду"
+		/// Возвращает true если фишка с индексом находится в горизонтальном "ряду"
 		private function isHorizontalMatch(i:int):Boolean 
 		{
 			return colNumber(i) >= 2 && _grid[i].type == _grid[i - 1].type && _grid[i].type == _grid[i - 2].type && rowNumber(i) == rowNumber(i - 2);
 		}
-		// Возвращает true если фишка с индексом находится в вертикальном "ряду"
+		/// Возвращает true если фишка с индексом находится в вертикальном "ряду"
 		private function isVerticalMatch(i:int):Boolean 
 		{
 			return rowNumber(i) >= 2 && _grid[i].type == _grid[i - FIELD_SIZE].type && _grid[i].type == _grid[i - 2 * FIELD_SIZE].type;
 		}
-		// Возвращает номер колонки
+		/// Возвращает номер колонки
 		private function colNumber(i:int):Number 
 		{
 			return i % FIELD_SIZE;
 		}
-		// Возвращает номер строки
+		/// Возвращает номер строки
 		private function rowNumber(i:int):Number 
 		{
 			return Math.floor(i / FIELD_SIZE);
