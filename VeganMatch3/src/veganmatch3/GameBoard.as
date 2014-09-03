@@ -122,6 +122,40 @@ package veganmatch3
 			}
 		}
 		
+		/// Поиск и удаление рядов
+		private function findAndRemoveMatches():void 
+		{
+			// получаем список плиток которые "вряд"
+			var matchs:Array = lookForMatches();
+			for (var i:int = 0; i < matchs.length; i++) 
+			{
+				var numPoints:Number = (matchs[i].length - 1) * 50;
+				for (var j:int = 0; j < matchs[i].length; j++) 
+				{
+					if (_gameField.contains(matchs[i][j]))
+					{
+						//var pb = new PointBurst(this,numPoints,matches[i][j].x,matches[i][j].y);
+						addScore(numPoints);
+						_gameField.removeChild(matchs[i][j]);
+						_grid[matchs[i][j].index] = null;
+						affectAbove(matchs[i][j]);
+					}
+				}
+			}
+			
+			// Добавляем новые плитки на верх поля
+			addNewTiles();
+			
+			// Нет плиток кторые "вряд", возможно игра закончилась?
+			if (matchs.length == 0)
+			{
+				if (!lookForPossibles())
+				{
+					endGame();
+				}
+			}
+		}
+		
 		/// Клик по плиткам
 		private function clickTile(e:TouchEvent):void 
 		{
