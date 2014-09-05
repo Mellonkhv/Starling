@@ -3,6 +3,7 @@ package veganmatch3
 	import adobe.utils.CustomActions;
 	import flash.geom.Point;
 	import starling.display.Sprite;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -24,7 +25,7 @@ package veganmatch3
 		
 		//==============================
 		// PRIVATE WARIABLE
-		private var _isDroping:Boolean;
+		private var _isDropping:Boolean;
 		private var _isSwapping:Boolean;
 		private var _gameField:Sprite;
 		private var _grid:Vector.<Piece> = new Vector.<Piece>;
@@ -52,7 +53,7 @@ package veganmatch3
 		/// Генерирование игровой сетки
 		private function generateGrid():void 
 		{
-			_isDroping = false;
+			_isDropping = false;
 			_isSwapping = false;
 			_grid.length = FIELD_SIZE * FIELD_SIZE;
 			_gameField = new Sprite();
@@ -76,7 +77,7 @@ package veganmatch3
 			this.addChild(_gameField);
 		}
 		/// Обновление состояния плиток
-		private function update(e:Event):void 
+		private function update(e:EnterFrameEvent):void 
 		{
 			var madeMove:Boolean = false;
 			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
@@ -84,8 +85,6 @@ package veganmatch3
 				if (_grid[i] != null)
 				{
 					// Смещаем вниз
-					var xx:int = ((rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5));
-					trace(xx);
 					if (_grid[i].y < ((rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5)))
 					{
 						_grid[i].y += 5;
@@ -111,13 +110,13 @@ package veganmatch3
 				}
 			}
 			// Если все падения завершены
-			if (isDropping && !madeMove) {
-				isDropping = false;
+			if (_isDropping && !madeMove) {
+				_isDropping = false;
 				findAndRemoveMatches();
 				
 			// Если все замены завершены
-			} else if (isSwapping && !madeMove) {
-				isSwapping = false;
+			} else if (_isSwapping && !madeMove) {
+				_isSwapping = false;
 				findAndRemoveMatches();
 			}
 		}
@@ -138,7 +137,7 @@ package veganmatch3
 						addScore(numPoints);
 						_gameField.removeChild(matchs[i][j]);
 						_grid[matchs[i][j].index] = null;
-						affectAbove(matchs[i][j]);
+						//affectAbove(matchs[i][j]);
 					}
 				}
 			}
@@ -156,6 +155,16 @@ package veganmatch3
 			}
 		}
 		
+		private function endGame():void 
+		{
+			
+		}
+		
+		private function addScore(numPoints:Number):void 
+		{
+			
+		}
+		
 		/// Возвращает массив всех найденых линий
 		private function lookForMatches():Array 
 		{
@@ -163,13 +172,61 @@ package veganmatch3
 			// поиск горизонтальных и вертикальных линий (похоже тут будет спагетикод или нет)
 			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
 			{
-				var match:Array = getMatch(i);
+				// поиск вертикальных линий
+				var matchVert:Array = getMatchVert(i);
+				if (matchVert.length != 0)
+				{
+					matchList.push(matchVert);
+				}
+				// поиск горизонтальных линий
+				var matchHoriz:Array = getMatchHoriz(i);
+				if (matchHoriz.length != 0)
+				{
+					matchList.push(matchHoriz);
+					i += matchHoriz.length - 1;
+				}
 			}
+			return matchList;
+		}
+		
+		/// Получаем горизонтальную линию
+		private function getMatchHoriz(i:int):Array 
+		{
+			var match:Array = [];
+			if (isHorizontalMatch(i))
+			{
+				match.push(_grid[i - 2]);
+				match.push(_grid[i - 1]);
+				while (isHorizontalMatch(i))
+				{
+					match.push(_grid[i]);
+					i++;
+				}
+				
+			}
+			return match;
+		}
+		
+		/// Получаем вертикальную линию
+		private function getMatchVert(i:int):Array
+		{
+			var match:Array = [];
+			if (isVerticalMatch(i))
+			{
+				match.push(_grid[i - FIELD_SIZE*2]);
+				match.push(_grid[i - FIELD_SIZE]);
+				while (isVerticalMatch(i))
+				{
+					match.push(_grid[i]);
+					i += FIELD_SIZE;
+				}
+			}
+			return match;
 		}
 		
 		private function lookForPossibles():Boolean 
 		{
-			
+			return true;
 		}
 		
 		private function addNewTiles():void 
@@ -263,7 +320,7 @@ package veganmatch3
 		/// Возвращает номер строки
 		private function rowNumber(i:int):Number 
 		{
-			return Math.floor(i / FIELD_SIZE);
+			return int(i / FIELD_SIZE); //Math.floor
 		}
 	}
 
