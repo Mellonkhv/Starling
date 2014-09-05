@@ -137,7 +137,7 @@ package veganmatch3
 						addScore(numPoints);
 						_gameField.removeChild(matchs[i][j]);
 						_grid[matchs[i][j].index] = null;
-						//affectAbove(matchs[i][j]);
+						affectAbove(matchs[i][j]);
 					}
 				}
 			}
@@ -153,6 +153,11 @@ package veganmatch3
 					endGame();
 				}
 			}
+		}
+		
+		private function affectAbove(piece:Piece):void 
+		{
+			/// вот это надо обдумать
 		}
 		
 		private function endGame():void 
