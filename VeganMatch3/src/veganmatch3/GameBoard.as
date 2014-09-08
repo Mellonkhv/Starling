@@ -50,6 +50,7 @@ package veganmatch3
 			
 			this.addEventListener(Event.ENTER_FRAME, update);
 		}
+		
 		/// Генерирование игровой сетки
 		private function generateGrid():void 
 		{
@@ -59,16 +60,12 @@ package veganmatch3
 			_gameField = new Sprite();
 			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
 			{
-				do {
-					_grid[i] = new Piece();
+				_grid[i] = addTile(i);
+				do 
+				{
 					_grid[i].type = Math.ceil((Math.random() * TILE_TYPE));
 				}
 				while (isHorizontalMatch(i) || isVerticalMatch(i));
-				
-				_grid[i].x = (colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5);
-				_grid[i].y = (rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5);
-				_grid[i].index = i;
-				_grid[i].addEventListener(TouchEvent.TOUCH, clickTile);
 				
 				_gameField.addChild(_grid[i]);
 			}
@@ -76,6 +73,18 @@ package veganmatch3
 			_gameField.y = 29;
 			this.addChild(_gameField);
 		}
+		
+		private function addTile(i:int):Piece
+		{
+			var newTile:Piece = new Piece();
+			newTile.x = (colNumber(i) * SPACING) + OFFSET_X + (colNumber(i) * 5);
+			newTile.y = (rowNumber(i) * SPACING) + OFFSET_Y + (rowNumber(i) * 5);
+			newTile.index = i;
+			newTile.addEventListener(TouchEvent.TOUCH, clickTile);
+			
+			return newTile;
+		}
+		
 		/// Обновление состояния плиток
 		private function update(e:EnterFrameEvent):void 
 		{
@@ -244,9 +253,19 @@ package veganmatch3
 			return true;
 		}
 		
+		/// Если в колонке отсутствует фишка добавляем новую, падающую сверху
 		private function addNewTiles():void 
 		{
-			
+			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
+			{
+				if (_grid[i] == null)
+				{
+					_grid[i] = addTile(i);
+					_grid[i].type = Math.ceil((Math.random() * TILE_TYPE));
+					_grid[i].y = OFFSET_Y - SPACING - (SPACING * (rowNumber(i) + rowNumber(i)));
+					_gameField.addChild(_grid[i]);
+				}
+			}
 		}
 		
 		/// Клик по плиткам
