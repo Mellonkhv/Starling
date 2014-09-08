@@ -157,7 +157,17 @@ package veganmatch3
 		
 		private function affectAbove(piece:Piece):void 
 		{
-			/// вот это надо обдумать
+			/// сдвигать по индексу с шагом FIELD_SIZE
+			for (var i:int = piece.index - FIELD_SIZE; i >= 0 ; i -= FIELD_SIZE) 
+			{
+				if (_grid[i] != null)
+				{
+					_grid[i].index += FIELD_SIZE;
+					_grid[i + FIELD_SIZE] = _grid[i];
+					_grid[i] = null;
+				}
+				
+			}
 		}
 		
 		private function endGame():void 
