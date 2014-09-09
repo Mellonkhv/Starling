@@ -12,7 +12,7 @@ package veganmatch3
 	{
 		private var _type:int;
 		private var _pieceImage:Image;
-		private var _index:int;
+		private var _index:int; // TODO: удалить
 		private var _col:uint;
 		private var _row:uint;
 		

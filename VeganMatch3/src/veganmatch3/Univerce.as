@@ -1,8 +1,5 @@
 package veganmatch3 
 {
-	import flash.geom.Point;
-	import starling.animation.Transitions;
-	import starling.animation.Tween;
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
@@ -11,7 +8,6 @@ package veganmatch3
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.text.TextField;
-	import starling.utils.deg2rad;
 	import starling.utils.HAlign;
 	import starling.utils.VAlign;
 	
@@ -44,7 +40,6 @@ package veganmatch3
 		private var _isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var _gameScore:int;
 		private var _scoreText:TextField;
-		private var _tween:Tween;
 		
 		//=========================================
 		// CONSTRUCTOR
@@ -64,36 +59,9 @@ package veganmatch3
 			//this.addChild(_board);
 			/// Запуск игры
 			startMatchThree();
-			trace(Math.floor(8 / 8));
-			trace(Math.floor(19 / 8));
-			trace(24 % 8);
-			trace(19 % 8);
 			/// Вывод набраных очков
-			addScoreText();
+			addScoreText();			
 			
-			/// Тест анимации
-			tweenAnimation();
-		}
-		
-		private function tweenAnimation():void 
-		{
-			var tween:Tween = new Tween(_grid[0][0], 2.0, Transitions.EASE_IN_OUT);
-			tween.animate("x", _grid[0][0].x + 50);
-			tween.animate("rotation", deg2rad(45));
-			tween.fadeTo(0);
-			tween.onComplete = tween_oncomplete;
-			
-			//tween.onComplete
-			Starling.juggler.add(tween);
-		}
-		
-		private function tween_oncomplete():void 
-		{
-			var tween:Tween = new Tween(_grid[0][0], 2.0, Transitions.EASE_IN_OUT);
-			tween.animate("x", _grid[0][0].x - 50);
-			tween.animate("rotation", deg2rad(0));
-			tween.fadeTo(1);
-			Starling.juggler.add(tween);
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
@@ -226,15 +194,6 @@ package veganmatch3
 			_grid[secondPiece.col][secondPiece.row] = secondPiece;
 		}
 		
-		// TODO: Заменить данную анимацию на Tween
-		private function tweenMove(piece:Piece, property:String, endValue:Number):void
-		{
-			var tween:Tween = new Tween(piece, 0.5, Transitions.EASE_IN_OUT);
-			tween.animate(property, endValue);
-			tween.onComplete = endTween;
-			Starling.juggler.add(tween);
-		}
-		
 		private function endTween():void 
 		{
 			dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
@@ -254,33 +213,25 @@ package veganmatch3
 						// Смещаем вниз
 						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
-							numb = (_grid[col][row].row * SPACING + OFFSET_Y + row * 5);
 							_grid[col][row].y += 5;
-							//tweenMove(_grid[col][row], "y", numb);
 							madeMove = true;
 						}
 						// Смещаем вверх
 						else if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
-							numb = (_grid[col][row].row * SPACING + OFFSET_Y + row * 5);
 							_grid[col][row].y -= 5;
-							//tweenMove(_grid[col][row], "y", numb);
 							madeMove = true;
 						}
 						// Смещаем вправо
 						else if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X + col * 5)
-						{
-							numb = (_grid[col][row].col * SPACING + OFFSET_X + col * 5);
+						{	
 							_grid[col][row].x += 5;
-							//tweenMove(_grid[col][row], "x", numb);
 							madeMove = true;
 						}
 						// Смещаем влево
 						else if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X + col * 5)
 						{
-							numb = (_grid[col][row].col * SPACING + OFFSET_X + col * 5);
 							_grid[col][row].x -= 5;
-							//tweenMove(_grid[col][row], "x", numb);
 							madeMove = true;
 						}
 					}
