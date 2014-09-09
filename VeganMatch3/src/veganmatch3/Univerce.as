@@ -229,7 +229,7 @@ package veganmatch3
 		// TODO: Заменить данную анимацию на Tween
 		private function tweenMove(piece:Piece, property:String, endValue:Number):void
 		{
-			var tween:Tween = new Tween(piece, 0.2, Transitions.EASE_IN_OUT);
+			var tween:Tween = new Tween(piece, 0.5, Transitions.EASE_IN_OUT);
 			tween.animate(property, endValue);
 			tween.onComplete = endTween;
 			Starling.juggler.add(tween);
@@ -255,28 +255,32 @@ package veganmatch3
 						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
 							numb = (_grid[col][row].row * SPACING + OFFSET_Y + row * 5);
-							tweenMove(_grid[col][row], "y", numb);
+							_grid[col][row].y += 5;
+							//tweenMove(_grid[col][row], "y", numb);
 							madeMove = true;
 						}
 						// Смещаем вверх
 						else if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
 						{
 							numb = (_grid[col][row].row * SPACING + OFFSET_Y + row * 5);
-							tweenMove(_grid[col][row], "y", numb);
+							_grid[col][row].y -= 5;
+							//tweenMove(_grid[col][row], "y", numb);
 							madeMove = true;
 						}
 						// Смещаем вправо
 						else if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X + col * 5)
 						{
 							numb = (_grid[col][row].col * SPACING + OFFSET_X + col * 5);
-							tweenMove(_grid[col][row], "x", numb);
+							_grid[col][row].x += 5;
+							//tweenMove(_grid[col][row], "x", numb);
 							madeMove = true;
 						}
 						// Смещаем влево
 						else if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X + col * 5)
 						{
 							numb = (_grid[col][row].col * SPACING + OFFSET_X + col * 5);
-							tweenMove(_grid[col][row], "x", numb);
+							_grid[col][row].x -= 5;
+							//tweenMove(_grid[col][row], "x", numb);
 							madeMove = true;
 						}
 					}

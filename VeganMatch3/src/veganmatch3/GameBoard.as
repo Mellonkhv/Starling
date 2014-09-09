@@ -152,7 +152,7 @@ package veganmatch3
 			}
 			
 			// Добавляем новые плитки на верх поля
-			addNewTiles();
+			addNewTiles(matchs);
 			
 			// Нет ниодной линии, возможно игра закончилась?
 			if (matchs.length == 0)
@@ -217,11 +217,11 @@ package veganmatch3
 		private function getMatchHoriz(i:int):Array 
 		{
 			var match:Array = [];
-			if (isHorizontalMatch(i))
+			if (i<= 64 && isHorizontalMatch(i))
 			{
 				match.push(_grid[i - 2]);
 				match.push(_grid[i - 1]);
-				while (isHorizontalMatch(i))
+				while (i<= 64 && isHorizontalMatch(i))
 				{
 					match.push(_grid[i]);
 					i++;
@@ -235,11 +235,11 @@ package veganmatch3
 		private function getMatchVert(i:int):Array
 		{
 			var match:Array = [];
-			if (isVerticalMatch(i))
+			if (i <64 && isVerticalMatch(i))
 			{
 				match.push(_grid[i - FIELD_SIZE*2]);
 				match.push(_grid[i - FIELD_SIZE]);
-				while (isVerticalMatch(i))
+				while (i <64 && isVerticalMatch(i))
 				{
 					match.push(_grid[i]);
 					i += FIELD_SIZE;
@@ -254,9 +254,16 @@ package veganmatch3
 		}
 		
 		/// Если в колонке отсутствует фишка добавляем новую, падающую сверху
-		private function addNewTiles():void 
+		private function addNewTiles(matchs:Array):void 
 		{
-			for (var i:int = 0; i < FIELD_SIZE * FIELD_SIZE; i++) 
+			for (var i:int = 0; i < matchs.length; i++) 
+			{
+				for (var j:int = matchs[i].length-1; j >= 0; j--) 
+				{
+					
+				}
+			}
+			/*for (var i:int = FIELD_SIZE * FIELD_SIZE - 1; i >=0 ; i--) 
 			{
 				if (_grid[i] == null)
 				{
@@ -265,7 +272,7 @@ package veganmatch3
 					_grid[i].y = OFFSET_Y - SPACING - (SPACING * (rowNumber(i) + rowNumber(i)));
 					_gameField.addChild(_grid[i]);
 				}
-			}
+			}*/
 		}
 		
 		/// Клик по плиткам
