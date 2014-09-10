@@ -3,6 +3,7 @@ package veganmatch3
 	import starling.core.Starling;
 	import starling.display.Image;
 	import starling.display.Sprite;
+	import starling.events.EnterFrameEvent;
 	import starling.events.Event;
 	import starling.events.Touch;
 	import starling.events.TouchEvent;
@@ -180,7 +181,6 @@ package veganmatch3
 		/// Непосредственно сам обмен двух фишек местами
 		private function swapPieces(firstPiece:Piece, secondPiece:Piece):void 
 		{
-			// TODO: Воткнуть анимазию смены положения фишками сюда
 			// обмениваем значение row и col
 			var tempCol:uint = firstPiece.col;
 			var tempRow:uint = firstPiece.row;
@@ -194,16 +194,10 @@ package veganmatch3
 			_grid[secondPiece.col][secondPiece.row] = secondPiece;
 		}
 		
-		private function endTween():void 
-		{
-			dispatchEventWith(Event.REMOVE_FROM_JUGGLER);
-		}
-		
 		// Если фишка не наместе двигаем её на него
-		private function movePieces(e:Event):void 
+		private function movePieces(e:EnterFrameEvent):void 
 		{
 			var madeMove:Boolean = false;
-			var numb:Number;
 			for (var row:int = 0; row < 8; row++) 
 			{
 				for (var col:int = 0; col < 8; col++) 
@@ -238,13 +232,13 @@ package veganmatch3
 				}
 			}
 			// Все падения завершены
-			if (_isDroping && madeMove)
+			if (_isDroping && !madeMove)
 			{
 				_isDroping = false;
 				findAndRemoveMatches();
 			}
 			// Все обмены завершены
-			else if (_isSwapping && madeMove)
+			else if (_isSwapping && !madeMove)
 			{
 				_isSwapping = false;
 				findAndRemoveMatches();
