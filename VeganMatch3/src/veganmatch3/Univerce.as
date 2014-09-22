@@ -1,6 +1,7 @@
 package veganmatch3 
 {
 	import starling.core.Starling;
+	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
@@ -63,6 +64,15 @@ package veganmatch3
 			/// Вывод набраных очков
 			addScoreText();			
 			
+			addButtons();
+		}
+		
+		private function addButtons():void
+		{
+			var crazyButton:Button = new Button(Assets.getAtlas().getTexture("title_20"));
+			crazyButton.x = 10;
+			crazyButton.y = 480 - 55;
+			this.addChild(crazyButton);
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
