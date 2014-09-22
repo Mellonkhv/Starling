@@ -73,6 +73,12 @@ package veganmatch3
 			crazyButton.x = 10;
 			crazyButton.y = 480 - 55;
 			this.addChild(crazyButton);
+			crazyButton.addEventListener(Event.TRIGGERED, cutFullMatch);
+		}
+		
+		private function cutFullMatch(e:Event):void 
+		{
+			
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
