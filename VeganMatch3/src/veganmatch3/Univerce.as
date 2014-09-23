@@ -1,6 +1,8 @@
 package veganmatch3 
 {
+	import flash.geom.Point;
 	import starling.core.Starling;
+	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.EnterFrameEvent;
@@ -41,6 +43,9 @@ package veganmatch3
 		private var _isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var _gameScore:int;
 		private var _scoreText:TextField;
+		private var _mouseX:Number = 0;
+		private var _mouseY:Number = 0;
+		private var _isMatchCut:Boolean = false;
 		
 		//=========================================
 		// CONSTRUCTOR
@@ -63,6 +68,33 @@ package veganmatch3
 			/// Вывод набраных очков
 			addScoreText();			
 			
+			addButtons();
+		}
+		
+		private function addButtons():void
+		{
+			var crazyButton:Button = new Button(Assets.getAtlas().getTexture("title_20"));
+			crazyButton.x = 10;
+			crazyButton.y = 480 - 55;
+			crazyButton.addEventListener(Event.TRIGGERED, cutFullMatch);
+			this.addChild(crazyButton);
+		}
+		
+		private function cutFullMatch(e:Event):void 
+		{
+			_gameSprite.addEventListener(TouchEvent.TOUCH, moveMouse);
+			_isMatchCut = true;
+		}
+		
+		private function moveMouse(e:TouchEvent):void 
+		{
+			var touch:Touch = e.getTouch(_gameSprite);
+			if (touch != null)
+			{
+				var location:Point = touch.getLocation(_gameSprite);
+				_mouseX = location.x;
+				_mouseY = location.y;
+			}
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
@@ -197,6 +229,7 @@ package veganmatch3
 		// Если фишка не наместе двигаем её на него
 		private function movePieces(e:EnterFrameEvent):void 
 		{
+			trace(_mouseX + " " + _mouseY);
 			var madeMove:Boolean = false;
 			for (var row:int = 0; row < 8; row++) 
 			{
