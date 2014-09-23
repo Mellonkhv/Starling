@@ -76,12 +76,18 @@ package veganmatch3
 			var crazyButton:Button = new Button(Assets.getAtlas().getTexture("title_20"));
 			crazyButton.x = 10;
 			crazyButton.y = 480 - 55;
+<<<<<<< HEAD
 			crazyButton.addEventListener(Event.TRIGGERED, cutFullMatch);
 			this.addChild(crazyButton);
+=======
+			this.addChild(crazyButton);
+			crazyButton.addEventListener(Event.TRIGGERED, cutFullMatch);
+>>>>>>> origin/master
 		}
 		
 		private function cutFullMatch(e:Event):void 
 		{
+<<<<<<< HEAD
 			_gameSprite.addEventListener(TouchEvent.TOUCH, moveMouse);
 			_isMatchCut = true;
 		}
@@ -95,6 +101,9 @@ package veganmatch3
 				_mouseX = location.x;
 				_mouseY = location.y;
 			}
+=======
+			
+>>>>>>> origin/master
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
