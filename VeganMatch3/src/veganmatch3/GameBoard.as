@@ -1,6 +1,7 @@
 package veganmatch3 
 {
 	import starling.display.Sprite;
+	import starling.events.TouchEvent;
 	
 	/**
 	 * ...
@@ -11,6 +12,7 @@ package veganmatch3
 		//==============================
 		// CONSTANTS
 		static public const GRIT_SIZE:int = 8;
+		static public const NUM_TILES:int = 6;
 		
 		//==============================
 		// PRIVATE VARIABLE
@@ -56,7 +58,7 @@ package veganmatch3
 				{
 					for (var row:int = 0; row < GRIT_SIZE; row++) 
 					{
-						addTile(col, row);
+						_gameSprite.addChild(addTile(col, row));
 					}
 				}
 				/// Проверка поля на "3Вряд"
@@ -71,6 +73,19 @@ package veganmatch3
 			_isSwapping = false;
 			
 			this.addChild(_gameSprite);
+		}
+		
+		private function addTile(col:int, row:int):Piece 
+		{
+			var tile:Piece = new Piece();
+			tile.type = Math.ceil(Math.random() * NUM_TILES);
+			tile.x = (col * SPASING);
+			tile.y = (row * SPASING);
+			tile.col = col;
+			tile.row = row;
+			_gridArr[col][row] = tile;
+			tile.addEventListener(TouchEvent.TOUCH, clickTile);
+			return tile;
 		}
 		
 		//==============================
