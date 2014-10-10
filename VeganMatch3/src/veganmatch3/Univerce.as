@@ -101,20 +101,7 @@ package veganmatch3
 		
 		private function spellLocation(spellType:String):void
 		{
-			switch (spellType)
-			{
-				case "cutFullMatch" :
-					/// вертикальное выделение
-					if (_mouseY < _mouseX )
-					{
-						trace(int(_mouseX / SPACING) + " " + int(_mouseY / SPACING));
-					}
-					/// горизонтальное выделение
-					else if (_mouseY > _mouseX)
-					{
-						trace(int(_mouseX / SPACING) + " " + int(_mouseY / SPACING));
-					}
-			}
+			
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
