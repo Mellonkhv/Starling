@@ -1,5 +1,6 @@
 package veganmatch3 
 {
+	import flash.geom.Point;
 	import starling.core.Starling;
 	import starling.display.Button;
 	import starling.display.Image;
@@ -27,9 +28,9 @@ package veganmatch3
 		//=========================================
 		// PRIVATE CONSTANTS
 		private const NUM_PIECES:uint = 6;
-		private const SPACING:Number = 45;
-		private const OFFSET_X:Number = 10;
-		private const OFFSET_Y:Number = 10;
+		private const SPACING:Number = 50;
+		private const OFFSET_X:Number = 0;
+		private const OFFSET_Y:Number = 0;
 		
 		//=========================================
 		// PRIVATE VARIABLE
@@ -42,6 +43,10 @@ package veganmatch3
 		private var _isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var _gameScore:int;
 		private var _scoreText:TextField;
+		private var _mouseX:Number = 0;
+		private var _mouseY:Number = 0;
+		private var _superSpell:Boolean = false;
+		private var _spellType:String = null;
 		
 		//=========================================
 		// CONSTRUCTOR
@@ -57,8 +62,8 @@ package veganmatch3
 		private function init(e:Event=null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			//_board = new Image(Assets.getTexture("BackGroundImg"));
-			//this.addChild(_board);
+			_board = new Image(Assets.getTexture("BackGroundImg"));
+			this.addChild(_board);
 			/// Запуск игры
 			startMatchThree();
 			/// Вывод набраных очков
@@ -72,13 +77,44 @@ package veganmatch3
 			var crazyButton:Button = new Button(Assets.getAtlas().getTexture("title_20"));
 			crazyButton.x = 10;
 			crazyButton.y = 480 - 55;
-			this.addChild(crazyButton);
 			crazyButton.addEventListener(Event.TRIGGERED, cutFullMatch);
+			this.addChild(crazyButton);
 		}
 		
 		private function cutFullMatch(e:Event):void 
 		{
-			
+			_gameSprite.addEventListener(TouchEvent.TOUCH, moveMouse);
+			_superSpell = true;
+			_spellType = "cutFullMatch";
+		}
+		
+		private function moveMouse(e:TouchEvent):void 
+		{
+			var touch:Touch = e.getTouch(_gameSprite);
+			if (touch != null)
+			{
+				var location:Point = touch.getLocation(_gameSprite);
+				_mouseX = location.x;
+				_mouseY = location.y;
+			}
+		}
+		
+		private function spellLocation(spellType:String):void
+		{
+			switch (spellType)
+			{
+				case "cutFullMatch" :
+					/// вертикальное выделение
+					if (_mouseY < _mouseX )
+					{
+						trace(int(_mouseX / SPACING) + " " + int(_mouseY / SPACING));
+					}
+					/// горизонтальное выделение
+					else if (_mouseY > _mouseX)
+					{
+						trace(int(_mouseX / SPACING) + " " + int(_mouseY / SPACING));
+					}
+			}
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
@@ -93,7 +129,7 @@ package veganmatch3
 			_isDroping = false;
 			_isSwapping = false;
 			_gameScore = 0;
-			this.addEventListener(Event.ENTER_FRAME, movePieces);
+			this.addEventListener(Event.ENTER_FRAME, update);
 		}
 		/// Создание сетки из случайных фишек и расположение спрайта сетки относительно координат
 		private function setUpGrid():void 
@@ -116,8 +152,8 @@ package veganmatch3
 				if (lookForPossibles() == false) continue;
 				break;
 			}
-			_gameSprite.x = 181;
-			_gameSprite.y = 29;
+			_gameSprite.x = 191;
+			_gameSprite.y = 39;
 			addChild (_gameSprite);
 		}
 		
@@ -126,8 +162,8 @@ package veganmatch3
 		{
 			var newPiece:Piece = new Piece();
 			newPiece.type = Math.ceil(Math.random() * NUM_PIECES);
-			newPiece.x = (col * SPACING) + OFFSET_X + (col * 5);
-			newPiece.y = (row * SPACING) + OFFSET_Y + (row * 5);
+			newPiece.x = (col * SPACING); //+ OFFSET_X + (col );
+			newPiece.y = (row * SPACING);// + OFFSET_Y + (row );
 			newPiece.col = col;
 			newPiece.row = row;
 			_gameSprite.addChild(newPiece);
@@ -211,8 +247,13 @@ package veganmatch3
 		}
 		
 		// Если фишка не наместе двигаем её на него
-		private function movePieces(e:EnterFrameEvent):void 
+		private function update(e:EnterFrameEvent):void 
 		{
+			//trace(_mouseX + " " + _mouseY);
+			if (_superSpell)
+			{
+				spellLocation(_spellType);
+			}
 			var madeMove:Boolean = false;
 			for (var row:int = 0; row < 8; row++) 
 			{
@@ -221,25 +262,25 @@ package veganmatch3
 					if (_grid[col][row] != null)
 					{
 						// Смещаем вниз
-						if (_grid[col][row].y < _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
+						if (_grid[col][row].y < _grid[col][row].row * SPACING)
 						{
 							_grid[col][row].y += 5;
 							madeMove = true;
 						}
 						// Смещаем вверх
-						else if (_grid[col][row].y > _grid[col][row].row * SPACING + OFFSET_Y + row * 5)
+						else if (_grid[col][row].y > _grid[col][row].row * SPACING)
 						{
 							_grid[col][row].y -= 5;
 							madeMove = true;
 						}
 						// Смещаем вправо
-						else if (_grid[col][row].x < _grid[col][row].col * SPACING + OFFSET_X + col * 5)
+						else if (_grid[col][row].x < _grid[col][row].col * SPACING)
 						{	
 							_grid[col][row].x += 5;
 							madeMove = true;
 						}
 						// Смещаем влево
-						else if (_grid[col][row].x > _grid[col][row].col * SPACING + OFFSET_X + col * 5)
+						else if (_grid[col][row].x > _grid[col][row].col * SPACING)
 						{
 							_grid[col][row].x -= 5;
 							madeMove = true;
@@ -385,7 +426,7 @@ package veganmatch3
 					if (_grid[col][row] == null)
 					{
 						var newPiece:Piece = addPiece(col, row);
-						newPiece.y = OFFSET_Y - SPACING - SPACING * missingPieces++ - (row * 5);
+						newPiece.y = -SPACING - SPACING * missingPieces++ ;
 						_isDroping = true;
 					}
 				}
@@ -488,7 +529,7 @@ package veganmatch3
 			_grid = null;
 			this.removeChild(_gameSprite);
 			_gameSprite = null;
-			removeEventListener(Event.ENTER_FRAME, movePieces);
+			removeEventListener(Event.ENTER_FRAME, update);
 		}
 	}
 }
