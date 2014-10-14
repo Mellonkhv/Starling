@@ -20,6 +20,7 @@ package veganmatch3
 		private var _isDroping:Boolean;
 		private var _isSwapping:Boolean;
 		private var _gameSprite:Sprite;
+		private var _universe:Universe;
 		
 		//==============================
 		// CONSTRUCTOR
@@ -36,6 +37,8 @@ package veganmatch3
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
+			_universe = Universe.getInstance();
+			
 			/// Создаём сетку
 			setupGrid();
 		}
@@ -43,10 +46,12 @@ package veganmatch3
 		private function setupGrid():void 
 		{
 			///Создаём массив сетки
+			_universe.grid = [];
 			_gridArr = [];
 			for (var i:int = 0; i < GRIT_SIZE; i++) 
 			{
 				_gridArr[i] = [];
+				_universe.grid[1] = [];
 			}
 			
 			/// создаём спрайт сетки

@@ -18,7 +18,7 @@ package veganmatch3
 	 * ...
 	 * @author Mellonkhv
 	 */
-	public class Univerce extends Sprite 
+	public class Universe extends Sprite 
 	{
 		//=========================================
 		// PUBLIC CONSTANTS
@@ -34,6 +34,7 @@ package veganmatch3
 		
 		//=========================================
 		// PRIVATE VARIABLE
+		private static var _instance:Universe;
 		private var _board:Image;
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
@@ -50,9 +51,16 @@ package veganmatch3
 		
 		//=========================================
 		// CONSTRUCTOR
-		public function Univerce() 
+		public function Universe() 
 		{
 			super();
+			
+			if (_instance != null)
+			{
+				throw("Error: Мир уже существует. Используйте Universe.getInstance();");
+			}
+			_instance = this;
+			
 			if (stage) init();
 			else this.addEventListener(Event.ADDED_TO_STAGE, init);
 		}
@@ -510,6 +518,8 @@ package veganmatch3
 			// TODO: Требуется доработка
 		}
 		
+		//=========================================
+		// PUBLIC FUNCTION
 		// TODO: привязать функцию к кнопке playAgain
 		public function cleanUp()
 		{
@@ -517,6 +527,23 @@ package veganmatch3
 			this.removeChild(_gameSprite);
 			_gameSprite = null;
 			removeEventListener(Event.ENTER_FRAME, update);
+		}
+		
+		public static function getInstance():Universe
+		{
+			return (_instance == null) ? new Universe() : _instance;
+		}
+		
+		//=========================================
+		// GETTER & SETTER
+		public function get grid():Array 
+		{
+			return _grid;
+		}
+		
+		public function set grid(value:Array):void 
+		{
+			_grid = value;
 		}
 	}
 }
