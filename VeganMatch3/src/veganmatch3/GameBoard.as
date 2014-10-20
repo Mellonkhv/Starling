@@ -1,7 +1,9 @@
 package veganmatch3 
 {
 	import starling.display.Sprite;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
+	import starling.events.TouchPhase;
 	
 	/**
 	 * ...
@@ -21,6 +23,7 @@ package veganmatch3
 		private var _isSwapping:Boolean;
 		private var _gameSprite:Sprite;
 		private var _universe:Universe;
+		private var _firstTile:Piece = null;
 		
 		//==============================
 		// CONSTRUCTOR
@@ -91,6 +94,19 @@ package veganmatch3
 			_gridArr[col][row] = tile;
 			tile.addEventListener(TouchEvent.TOUCH, clickTile);
 			return tile;
+		}
+		
+		private function clickTile(e:TouchEvent):void 
+		{
+			var tile:Piece = Piece(e.currentTarget);
+			var touches:Vector.<Touch> = e.getTouches(this, TouchPhase.ENDED);
+			if (touches.length == 0) return;
+			/// Клик по первой фишке
+			if (_firstTile == null)
+			{
+				_firstTile = tile;
+				tile.pieceSelect.visible = true;
+			}
 		}
 		
 		//==============================

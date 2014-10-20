@@ -38,7 +38,10 @@ package veganmatch3
 		private var _board:Image;
 		private var _pieces:Vector.<Sprite>; // фишки
 		private var _grid:Array; // массив фишек
+		
+		private var _gameBoard:GameBoard; //класс доски с плитками
 		private var _gameSprite:Sprite; // Спрайт для фишек.
+		
 		private var _firstPiece:Piece; /// ссылка на первую кликнутую фишку
 		private var _isDroping:Boolean; //какие фишки нам надо анимировать в данный момент
 		private var _isSwapping:Boolean; //какие фишки нам надо анимировать в данный момент
@@ -72,12 +75,17 @@ package veganmatch3
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			_board = new Image(Assets.getTexture("BackGroundImg"));
 			this.addChild(_board);
+			
 			/// Запуск игры
-			startMatchThree();
+			this.addChild(_gameBoard);
+			//startMatchThree();
+			
 			/// Вывод набраных очков
 			addScoreText();			
 			
 			addButtons();
+			
+			this.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
 		private function addButtons():void
@@ -113,7 +121,7 @@ package veganmatch3
 		}
 		
 		/// Точка входа в игру (строит сетку и включает слушатель)
-		private function startMatchThree():void 
+		/*private function startMatchThree():void 
 		{
 			_grid = new Array();
 			for (var i:int = 0; i < 8; i++) 
@@ -124,7 +132,7 @@ package veganmatch3
 			_isDroping = false;
 			_isSwapping = false;
 			_gameScore = 0;
-			this.addEventListener(Event.ENTER_FRAME, update);
+			
 		}
 		/// Создание сетки из случайных фишек и расположение спрайта сетки относительно координат
 		private function setUpGrid():void 
@@ -165,7 +173,7 @@ package veganmatch3
 			_grid[col][row] = newPiece;
 			newPiece.addEventListener(TouchEvent.TOUCH, clickPiece);
 			return newPiece;
-		}
+		}*/
 		
 		/// Щелчёк по фишке с проверкой не выбрана ли ещё одна фишка
 		private function clickPiece(e:TouchEvent):void 
