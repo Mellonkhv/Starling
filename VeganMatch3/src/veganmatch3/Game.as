@@ -30,7 +30,7 @@ package veganmatch3
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			
-			_universe = new Univerce();
+			_universe = Universe.getInstance();
 			addChild(_universe);
 			//_world = new VVorld();
 			//addChild(_world);
