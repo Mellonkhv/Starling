@@ -101,11 +101,39 @@ package veganmatch3
 			var tile:Piece = Piece(e.currentTarget);
 			var touches:Vector.<Touch> = e.getTouches(this, TouchPhase.ENDED);
 			if (touches.length == 0) return;
-			/// Клик по первой фишке
+			/// Клик по первой плитке
 			if (_firstTile == null)
 			{
 				_firstTile = tile;
 				tile.pieceSelect.visible = true;
+			}
+			/// Клик по первой плитке пвторно
+			else if (_firstTile == tile)
+			{
+				tile.pieceSelect.visible = false
+				_firstTile = null;
+			}
+			/// Второй кликнута любая другая плитка на поле
+			else
+			{
+				_firstTile.pieceSelect.visible = false; /// убираем выделение
+				/// Тотже ряд, проверяем соседство в колонке
+				if ((_firstTile.row == tile.row) && (Math.abs(_firstTile.col - tile.col) == 1))
+				{
+					makeSwap(_firstTile, tile);
+					_firstTile = null;
+				}
+				/// та же колонка, проверяем на соседство в ряду
+				else if ((_firstTile.col == tile.col) && (Math.abs(_firstTile.row - tile.row) == 1))
+				{
+					makeSwap(_firstTile, tile);
+					_firstTile = null;
+				}
+				else
+				{
+					_firstTile = tile;
+					tile.pieceSelect.visible = true;
+				}
 			}
 		}
 		
