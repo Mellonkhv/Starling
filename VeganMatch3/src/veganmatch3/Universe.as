@@ -77,8 +77,14 @@ package veganmatch3
 			this.addChild(_board);
 			
 			/// Запуск игры
+			_gameBoard = new GameBoard();
 			this.addChild(_gameBoard);
+			_gameBoard.x = 191;
+			_gameBoard.y = 39;
 			//startMatchThree();
+			
+			_isDroping = false;
+			_isSwapping = false;
 			
 			/// Вывод набраных очков
 			addScoreText();			
@@ -173,7 +179,7 @@ package veganmatch3
 			_grid[col][row] = newPiece;
 			newPiece.addEventListener(TouchEvent.TOUCH, clickPiece);
 			return newPiece;
-		}*/
+		}
 		
 		/// Щелчёк по фишке с проверкой не выбрана ли ещё одна фишка
 		private function clickPiece(e:TouchEvent):void 
@@ -247,7 +253,7 @@ package veganmatch3
 			// измменяем позицию в сетке
 			_grid[_firstPiece.col][_firstPiece.row] = _firstPiece;
 			_grid[secondPiece.col][secondPiece.row] = secondPiece;
-		}
+		}*/
 		
 		// Если фишка не наместе двигаем её на него
 		private function update(e:EnterFrameEvent):void 
@@ -315,12 +321,13 @@ package veganmatch3
 				var numPoints:Number = (matches[i].length - 1) * 50;
 				for (var j:int = 0; j < matches[i].length; j++)
 				{
-					if (_gameSprite.contains(matches[i][j]))
+					if (_gameBoard.contains(matches[i][j]))
 					{
 						//var pb = new PointBurst(this, numPoints, matches[i][j].x, matches[i][j].y);
 						addScore(numPoints);
-						matches[i][j].removeEventListener(TouchEvent.TOUCH, clickPiece);
-						_gameSprite.removeChild(matches[i][j]);
+						//matches[i][j].removeEventListener(TouchEvent.TOUCH, clickPiece);
+						_gameBoard.destroyEventListener(matches[i][j]);
+						//_gameSprite.removeChild(matches[i][j]);
 						_grid[matches[i][j].col][matches[i][j].row] = null;
 						affectAbove(matches[i][j]);
 					}
@@ -356,11 +363,11 @@ package veganmatch3
 			}
 			
 			// поиск вертикальных линий
-			for (var col:int = 0; col < 8; col++) 
+			for (col = 0; col < 8; col++) 
 			{
-				for (var row:int = 0; row < 6; row++) 
+				for (row = 0; row < 6; row++) 
 				{
-					var match:Array = getMatchVert(col, row);
+					match = getMatchVert(col, row);
 					if (match.length > 2)
 					{
 						matchList.push(match);
@@ -391,7 +398,7 @@ package veganmatch3
 		// поиск вертикальных линий из заданной точки
 		private function getMatchVert(col:int, row:int):Array
 		{
-				var match:Array = new Array(_grid[col][row]);
+			var match:Array = new Array(_grid[col][row]);
 			for (var i:int = 1; row + i < 8; i++) 
 			{
 				if (_grid[col][row].type == _grid[col][row + i].type)
@@ -428,9 +435,11 @@ package veganmatch3
 				{
 					if (_grid[col][row] == null)
 					{
-						var newPiece:Piece = addPiece(col, row);
+						var newPiece:Piece = _gameBoard.addTile(col, row);
 						newPiece.y = -SPACING - SPACING * missingPieces++ ;
 						_isDroping = true;
+						
+						_gameBoard.gameSprite.addChild(newPiece);
 					}
 				}
 			}
@@ -518,7 +527,7 @@ package veganmatch3
 			_scoreText.text = "SCORE: " + _gameScore;
 		}
 		
-		private function endGame()
+		private function endGame():void
 		{
 			//сдвигаем в фон
 			setChildIndex(_gameSprite, 0);
@@ -529,7 +538,7 @@ package veganmatch3
 		//=========================================
 		// PUBLIC FUNCTION
 		// TODO: привязать функцию к кнопке playAgain
-		public function cleanUp()
+		public function cleanUp():void
 		{
 			_grid = null;
 			this.removeChild(_gameSprite);
@@ -552,6 +561,26 @@ package veganmatch3
 		public function set grid(value:Array):void 
 		{
 			_grid = value;
+		}
+		
+		public function get isSwapping():Boolean 
+		{
+			return _isSwapping;
+		}
+		
+		public function set isSwapping(value:Boolean):void 
+		{
+			_isSwapping = value;
+		}
+		
+		public function get isDroping():Boolean 
+		{
+			return _isDroping;
+		}
+		
+		public function set isDroping(value:Boolean):void 
+		{
+			_isDroping = value;
 		}
 	}
 }

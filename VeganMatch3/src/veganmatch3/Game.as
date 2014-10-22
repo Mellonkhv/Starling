@@ -11,7 +11,7 @@ package veganmatch3
 	{
 		//=========================================
 		// PRIVATE VARIABLE
-		private var _universe:Univerce;
+		private var _universe:Universe;
 		//private var _world:VVorld;
 		//private var _gameBourd:GameBoard;
 		
