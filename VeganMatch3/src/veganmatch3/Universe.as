@@ -40,7 +40,7 @@ package veganmatch3
 		private var _grid:Array; // массив фишек
 		
 		private var _gameBoard:GameBoard; //класс доски с плитками
-		private var _gameSprite:Sprite; // Спрайт для фишек.
+		//private var _gameSprite:Sprite; // Спрайт для фишек.
 		
 		private var _firstPiece:Piece; /// ссылка на первую кликнутую фишку
 		private var _isDroping:Boolean; //какие фишки нам надо анимировать в данный момент
@@ -89,12 +89,12 @@ package veganmatch3
 			/// Вывод набраных очков
 			addScoreText();			
 			
-			addButtons();
+			//addButtons();
 			
 			this.addEventListener(Event.ENTER_FRAME, update);
 		}
 		
-		private function addButtons():void
+		/*private function addButtons():void
 		{
 			var crazyButton:Button = new Button(Assets.getAtlas().getTexture("title_20"));
 			crazyButton.x = 10;
@@ -108,9 +108,9 @@ package veganmatch3
 			_gameSprite.addEventListener(TouchEvent.TOUCH, moveMouse);
 			_superSpell = true;
 			_spellType = "cutFullMatch";
-		}
+		}*/
 		
-		private function moveMouse(e:TouchEvent):void 
+		/*private function moveMouse(e:TouchEvent):void 
 		{
 			var touch:Touch = e.getTouch(_gameSprite);
 			if (touch != null)
@@ -119,7 +119,7 @@ package veganmatch3
 				_mouseX = location.x;
 				_mouseY = location.y;
 			}
-		}
+		}*/
 		
 		private function spellLocation(spellType:String):void
 		{
@@ -530,7 +530,7 @@ package veganmatch3
 		private function endGame():void
 		{
 			//сдвигаем в фон
-			setChildIndex(_gameSprite, 0);
+			//setChildIndex(_gameSprite, 0);
 			// переходим в экран окончания игры
 			// TODO: Требуется доработка
 		}
@@ -538,13 +538,13 @@ package veganmatch3
 		//=========================================
 		// PUBLIC FUNCTION
 		// TODO: привязать функцию к кнопке playAgain
-		public function cleanUp():void
+		/*public function cleanUp():void
 		{
 			_grid = null;
 			this.removeChild(_gameSprite);
 			_gameSprite = null;
 			removeEventListener(Event.ENTER_FRAME, update);
-		}
+		}*/
 		
 		public static function getInstance():Universe
 		{

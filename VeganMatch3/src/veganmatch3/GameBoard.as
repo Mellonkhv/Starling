@@ -57,16 +57,18 @@ package veganmatch3
 				_universe.grid[i] = [];
 			}
 			
-			/// создаём спрайт сетки
-			_gameSprite = new Sprite();
+			
 			/// Заполняем сетку
 			while (true)
 			{
+				/// создаём спрайт сетки
+				_gameSprite = new Sprite();
+				
 				for (var col:int = 0; col < GRIT_SIZE; col++) 
 				{
 					for (var row:int = 0; row < GRIT_SIZE; row++) 
 					{
-						_gameSprite.addChild(addTile(col, row));
+						addTile(col, row);
 					}
 				}
 				/// Проверка поля на "3Вряд"
@@ -292,6 +294,7 @@ package veganmatch3
 		public function destroyEventListener(tile:Piece):void
 		{
 			tile.removeEventListener(TouchEvent.TOUCH, clickTile);
+			_gameSprite.removeChild(tile);
 		}
 		
 		public function addTile(col:int, row:int):Piece 
@@ -304,6 +307,7 @@ package veganmatch3
 			tile.row = row;
 			//_gridArr[col][row] = tile;
 			_universe.grid[col][row] = tile;
+			_gameSprite.addChild(tile);
 			tile.addEventListener(TouchEvent.TOUCH, clickTile);
 			return tile;
 		}
